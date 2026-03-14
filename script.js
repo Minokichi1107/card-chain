@@ -18,8 +18,13 @@ function playSound(name) {
   }
 }
 
-// 音量設定（お好みで 0.0 〜 1.0）
-Object.values(SOUNDS).forEach(s => s.volume = 0.4);// ===== CHAIN TIERS =====
+// 音量設定（グローバル変数で管理）
+let masterVolume = 0.4;
+Object.values(SOUNDS).forEach(s => s.volume = masterVolume);
+function setVolume(v) {
+  masterVolume = v;
+  Object.values(SOUNDS).forEach(s => s.volume = v);
+}// ===== CHAIN TIERS =====
 const TIER_COLORS = [
   { min:1,  max:9,  label:"",         color:"#aaa",    shadow:"#aaa",    cls:"",       fieldCls:"" },
   { min:10, max:19, label:"CHAIN×",   color:"#00e5ff", shadow:"#00aaff", cls:"",       fieldCls:"tier1" },
@@ -48,6 +53,105 @@ function createDeck() {
 function draw() { return deck.pop(); }
 function refillHand() {
   while (hand.length<5 && deck.length>0) hand.push(draw());
+}
+
+// 補充カードをめくるアニメーション付きrefill
+function refillHandAnimated(callback) {
+  // 補充前の枚数を記録
+  const prevCount = hand.length;
+  refillHand();
+  const newCards = hand.slice(prevCount); // 新しく追加されたカード
+  if (newCards.length === 0) { callback(); return; }
+
+  let hDiv = document.getElementById("hand");
+  let allCardEls = hDiv.querySelectorAll(".card, .card-wrapper");
+
+  // 新しいカード分だけフリップアニメ
+  let flipped = 0;
+  newCards.forEach((c, idx) => {
+    const pos = prevCount + idx;
+    setTimeout(() => {
+      playSound("card");
+      // 該当位置のカード要素にflipアニメを適用
+      let cardEls = hDiv.querySelectorAll(".card");
+      if (cardEls[pos]) {
+        cardEls[pos].classList.add("card-deal-in");
+        setTimeout(() => cardEls[pos] && cardEls[pos].classList.remove("card-deal-in"), 400);
+      }
+      flipped++;
+      if (flipped === newCards.length) {
+        setTimeout(callback, 150);
+      }
+    }, idx * 120);
+  });
+}
+
+// ピンチ判定：出せるカードが1枚 かつ その1枚を出した後に繋がるカードが手札にない
+function isPinch() {
+  let playableCards = hand.filter(h => playable(h, field));
+  if (playableCards.length !== 1) return false;
+  if (hand.length < 2) return false;
+  // その1枚を仮に出した場合、残り手札から出せるカードがあるかチェック
+  let nextField = playableCards[0];
+  let restHand = hand.filter(h => h !== nextField);
+  let canContinue = restHand.some(h => playable(h, nextField));
+  return !canContinue;
+}
+
+// 補充＋ピンチ/詰まりチェックをまとめた共通処理
+function refillAndCheck() {
+  const prevLen = hand.length;
+  refillHand();
+  const added = hand.length - prevLen;
+
+  render(); // まず現状を描画
+
+  if (added === 0) {
+    // 補充なし→即チェック
+    isAnimating = false;
+    if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
+    if(isStuck()) { triggerStuck(); return; }
+    if(isPinch()) triggerPinch();
+    return;
+  }
+
+  // 補充カードだけめくりアニメ
+  let hDiv = document.getElementById("hand");
+  let cardEls = hDiv.querySelectorAll(".card");
+  let done = 0;
+  for (let k = 0; k < added; k++) {
+    const el = cardEls[prevLen + k];
+    if (!el) { done++; continue; }
+    // 初期状態を裏向き風に
+    el.style.transform = "translateY(-30px) rotateY(90deg)";
+    el.style.opacity = "0";
+    el.style.transition = "none";
+    setTimeout(() => {
+      playSound("card");
+      el.style.transition = `transform 0.3s ease ${k*0.12}s, opacity 0.15s ease ${k*0.12}s`;
+      el.style.transform = "translateY(0) rotateY(0deg)";
+      el.style.opacity = "1";
+      done++;
+      if (done === added) {
+        setTimeout(() => {
+          isAnimating = false;
+          if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
+          if(isStuck()) { triggerStuck(); return; }
+          if(isPinch()) triggerPinch();
+        }, 300 + k * 120);
+      }
+    }, k * 120 + 30);
+  }
+}
+
+// ピンチ演出
+function triggerPinch() {
+  setMsg("⚠️ PINCH! 出せるカードが1枚！", "error");
+  let fz = document.getElementById("fieldZone");
+  fz.classList.remove("pinch-flash");
+  void fz.offsetWidth;
+  fz.classList.add("pinch-flash");
+  setTimeout(() => fz.classList.remove("pinch-flash"), 1800);
 }
 function isRed(c) { return c.suit==="♦"||c.suit==="♥"; }
 function rankText(r) {
@@ -365,17 +469,16 @@ function tryPlay(i) {
 
   if(isAnimating) return;
 
-  // 最初の1枚（チェーンはまだ始まっていないのでメダルなし）
+  // 最初の1枚：chain=1スタート
   if(field === null){
     field = hand.splice(i,1)[0];
-    chain = 0;
+    chain = 1;
+    if(chain > maxChain) maxChain = chain;
     playSound("card");
-    setMsg(`カードを出しました`, "");
+    setMsg(`🔥 1 CHAIN!`, "chain-msg");
     showChainBanner(chain, false);
-    refillHand();
     render();
-    if(hand.length===0 && deck.length===0) { setTimeout(()=>deckClear(),400); return; }
-    if(isStuck()) { triggerStuck(); }
+    refillAndCheck();
     return;
   }
   
@@ -422,6 +525,10 @@ function tryPlay(i) {
     { at: 50, reward: 140, label: "50-52" },
     { at: 53, reward: 200, label: "CLEAR" },
   ];
+  // ボーナスを10→20→30ペース（等差+10）に上書き
+  CHAIN_MILESTONES.forEach((m, idx) => {
+    if (m.label !== "CLEAR") m.reward = (idx + 1) * 10;
+  });
   let milestone = CHAIN_MILESTONES.find(m => m.at === chain) || null;
   let chainReward = milestone ? milestone.reward : 0;
   let pokerBonus  = pokerHand ? pokerHand.multi : 0;
@@ -466,12 +573,7 @@ function tryPlay(i) {
   setTimeout(() => medalEl.classList.remove("medal-anim"), 400);
 
   showChainBanner(chain, !!milestone);
-  refillHand();
-  render(); // ← ここで medal.innerText = medals が正しく反映される
-  isAnimating = false;
-
-  if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
-  if(isStuck()) { triggerStuck(); }
+  refillAndCheck();
 }
 
 // ===== STUCK =====
@@ -495,13 +597,11 @@ function triggerStuck() {
     msg.classList.add("show");
   }, 400);
 
-  // 3秒後にGAME OVER（setTimeoutの前にmedals/maxChainをキャプチャ）
-  const capturedMedals = medals;
-  const capturedMaxChain = maxChain;
+  // 3秒後にGAME OVER（直前のmedals/maxChainをキャプチャして確実に渡す）
   setTimeout(() => {
     ov.classList.remove("show");
     msg.classList.remove("show");
-    gameOver(capturedMedals, capturedMaxChain);
+    gameOver(medals, maxChain);
   }, 3200);
 }
 

@@ -92,21 +92,23 @@ width: 200px;
 .hand-name { color: var(--cyan); /* 役名はシアン色に */ }
 .payRow .multiplier { color: var(--gold); /* 倍率は金色に */  font-weight: bold; }
 .payRow.active {
-  background: rgba(255,215,0,0.15);
+  background: rgba(255,215,0,0.35);
   border-color: var(--gold);
   color: #fff;
+  box-shadow: 0 0 12px rgba(255,215,0,0.5), inset 0 0 8px rgba(255,215,0,0.2);
 }
 .chainBonusRow.active {
-  background: rgba(255, 215, 0, 0.35);
+  background: rgba(255, 215, 0, 0.6);
   border-color: var(--gold);
   color: #000;
   font-weight: bold;
   transition: background 0.3s;
+  box-shadow: 0 0 16px rgba(255,215,0,0.7), inset 0 0 10px rgba(255,215,0,0.3);
 }
 .chainBonusRow.active span {
   color: #000 !important;
 }
-.payRow.active .multiplier { color: var(--gold); text-shadow: 0 0 8px var(--gold2); }
+.payRow.active .multiplier { color: var(--gold); text-shadow: 0 0 16px var(--gold), 0 0 30px var(--gold2); }
 
 /* ===== RIGHT: GAME AREA ===== */
 #gameArea {
@@ -349,16 +351,6 @@ width: 200px;
   color: var(--gold); text-shadow: 0 0 12px var(--gold2);
 }
 #pokerBanner.show { animation: chainPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275); }
-#pokerBanner.preview {
-  opacity: 0.4;
-  filter: grayscale(0.5);
-}
-#pokerBanner.confirmed {
-  opacity: 1;
-  filter: none;
-  animation: chainPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
-  text-shadow: 0 0 20px var(--gold2), 0 0 40px var(--gold2);
-}
 
 /* BOTTOM BAR */
 #bottomBar {
@@ -383,9 +375,12 @@ width: 200px;
 .statBox.deck-stat .s-value { color: #888; text-shadow: none; font-size:18px; }
 
 #msgBar {
-  font-size: 16px; color: var(--cyan); letter-spacing: 2px;
+  font-size: 14px; color: var(--cyan); letter-spacing: 1px;
   text-align: center; flex: 2;
   min-height: 24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 #msgBar.error { color: #ff6b6b; }
 #msgBar.success { color: #2ecc71; }
@@ -487,3 +482,52 @@ width: 200px;
   animation: blink 1.5s step-end infinite;
 }
 @keyframes blink { 50% { opacity:0; } }
+/* ===== カード補充めくりアニメ ===== */
+@keyframes cardDealIn {
+  0%   { transform: translateY(-30px) rotateY(90deg); opacity: 0; }
+  50%  { transform: translateY(0)     rotateY(90deg); opacity: 1; }
+  100% { transform: translateY(0)     rotateY(0deg);  opacity: 1; }
+}
+.card-deal-in {
+  animation: cardDealIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ===== ピンチ演出 ===== */
+@keyframes pinchFlash {
+  0%,100% { border-color: var(--green-felt); box-shadow: none; }
+  25%,75% { border-color: #ff4444; box-shadow: inset 0 0 40px rgba(255,0,0,0.3), 0 0 30px rgba(255,0,0,0.5); }
+  50%      { border-color: #ff0000; box-shadow: inset 0 0 60px rgba(255,0,0,0.5), 0 0 50px rgba(255,0,0,0.7); }
+}
+#fieldZone.pinch-flash {
+  animation: pinchFlash 0.4s ease 4;
+}
+
+/* ===== 音量スライダー ===== */
+#volumeControl {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 8px;
+}
+#volumeControl label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px; color: var(--cyan); letter-spacing: 2px; white-space: nowrap;
+}
+#volumeSlider {
+  -webkit-appearance: none;
+  width: 70px; height: 4px;
+  background: #1a3a5c; border-radius: 2px; outline: none; cursor: pointer;
+}
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  cursor: pointer;
+}
+#volumeSlider::-moz-range-thumb {
+  width: 12px; height: 12px;
+  border-radius: 50%; border: none;
+  background: var(--cyan);
+  box-shadow: 0 0 6px var(--cyan);
+  cursor: pointer;
+}

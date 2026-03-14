@@ -85,6 +85,11 @@
           <span class="s-value" id="deckInfo">--</span>
         </div>
         <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
+        <div id="volumeControl">
+          <label>🔊</label>
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
+            oninput="setVolume(parseFloat(this.value))">
+        </div>
       </div>
       <div id="insertCoin">INSERT COIN TO CONTINUE</div>
     </div>
