@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Chain</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ゲームの見た目を定義するCSS -->
+    <link rel="stylesheet" href="style.css">
+
+<div id="cabinet">
+
+  <!-- TITLE -->
+  <div id="titleBar">
+    <h1>★ CARD CHAIN ★</h1>
+    <div class="credits">MEDALS: <span id="medal">0</span></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div id="mainLayout">
+
+    <!-- LEFT: PAYOUT TABLE -->
+<div id="payoutPanel">
+  <div id="payoutTitle" style="margin-bottom:10px;">◆ BONUS PAYS ◆</div>
+  <div class="payRow" id="pay-royal">    <span class="hand-name">ROYAL FLUSH</span>  <span class="multiplier">×200</span></div>
+  <div class="payRow" id="pay-straight-flush"><span class="hand-name">STR FLUSH</span><span class="multiplier">×100</span></div>
+  <div class="payRow" id="pay-four">     <span class="hand-name">FOUR KIND</span>    <span class="multiplier">×50</span></div>
+  <div class="payRow" id="pay-full">     <span class="hand-name">FULL HOUSE</span>   <span class="multiplier">×20</span></div>
+  <div class="payRow" id="pay-flush">    <span class="hand-name">FLUSH</span>        <span class="multiplier">×15</span></div>
+  <div class="payRow" id="pay-straight"> <span class="hand-name">STRAIGHT</span>     <span class="multiplier">×10</span></div>
+
+  <div style="margin-top: 30px; border-top: 2px solid var(--border); padding-top: 6px;">
+  <div id="payoutTitle" style="color:var(--gold);">◆ CHAIN BONUS ◆</div>
+  <div class="payRow chainBonusRow" data-label="10-13"><span>10-13</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="14-16"><span>14-16</span><span style="color:var(--gold);">+20</span></div>
+  <div class="payRow chainBonusRow" data-label="17-19"><span>17-19</span><span style="color:var(--gold);">+30</span></div>
+  <div class="payRow chainBonusRow" data-label="20-22"><span>20-22</span><span style="color:var(--gold);">+40</span></div>
+  <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+50</span></div>
+  <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+60</span></div>
+  <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+70</span></div>
+  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+80</span></div>
+  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+90</span></div>
+  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+100</span></div>
+  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+110</span></div>
+  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+120</span></div>
+  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+130</span></div>
+  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+140</span></div>
+  <div class="payRow chainBonusRow" data-label="CLEAR"><span>🏆 CLEAR</span><span style="color:var(--gold);">+200</span></div>
+  </div>
+</div>
+    
+    <!-- RIGHT: GAME AREA -->
+    <div id="gameArea">
+
+      <!-- TRACKER -->
+      <div id="trackerPanel">
+        <div id="trackerTitle">◆ CARD TRACKER ◆</div>
+        <div id="cardBoard"></div>
+      </div>
+
+      <!-- FIELD -->
+      <div id="fieldZone">
+        <div id="fieldCards"></div>
+        <div id="chainBanner"><div id="chainText"></div></div>
+      </div>
+
+      <!-- HAND -->
+      <div id="handZone">
+        <div id="handTitle">◆ SELECT A CARD ◆</div>
+        <div id="pokerBanner"></div>
+        <div id="hand"></div>
+      </div>
+
+      <!-- BOTTOM BAR -->
+      <div id="bottomBar">
+        <div class="statBox chain-stat">
+          <span class="s-label">CHAIN</span>
+          <span class="s-value" id="chainVal">0</span>
+        </div>
+        <div id="msgBar">手札をクリックして出す</div>
+        <div class="statBox deck-stat">
+          <span class="s-label">DECK</span>
+          <span class="s-value" id="deckInfo">--</span>
+        </div>
+        <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
+      </div>
+      <div id="insertCoin">INSERT COIN TO CONTINUE</div>
+    </div>
+  </div>
+</div>
+
+<!-- STUCK -->
+<div id="stuckOverlay"></div>
+<div id="stuckMsg"></div>
+
+<!-- GAME OVER -->
+<div class="overlay" id="gameOverScreen">
+  <div id="gameOverTitle">GAME OVER</div>
+  <div class="overlay-score" id="gameOverScore"></div>
+  <button class="overlay-btn" onclick="start()">▶ PLAY AGAIN</button>
+</div>
+<!-- CLEAR -->
+<div class="overlay" id="clearScreen">
+  <div id="clearTitle">★ DECK CLEAR ★</div>
+  <div class="overlay-score" id="clearScore"></div>
+  <button class="overlay-btn" id="clearRetryBtn" onclick="start()">▶ PLAY AGAIN</button>
+</div>
+    <!-- ゲームロジック -->
+    <script src="script.js"></script>
+</body>
+</html>

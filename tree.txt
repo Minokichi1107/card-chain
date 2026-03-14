@@ -1,0 +1,87 @@
+フォルダー パスの一覧
+ボリューム シリアル番号は 40ED-6084 です
+C:.
+│  tree.txt
+│  
+├─Card Chain
+│  │  CHANE BONUS TABLE.txt
+│  │  TODO.txt
+│  │  
+│  ├─current
+│  │  │  index.html
+│  │  │  script.js
+│  │  │  style.css
+│  │  │  現在のスクリプト構造課題.txt
+│  │  │  
+│  │  ├─2026-03-12
+│  │  │  │  index_1.html
+│  │  │  │  index_2.html
+│  │  │  │  index_3.html
+│  │  │  │  script.js
+│  │  │  │  style.css
+│  │  │  │  
+│  │  │  └─sounds
+│  │  │          card.mp3
+│  │  │          clear.mp3
+│  │  │          click.mp3
+│  │  │          error.mp3
+│  │  │          hand.mp3
+│  │  │          lose.mp3
+│  │  │          
+│  │  ├─2026年3月14日
+│  │  │      index.html
+│  │  │      script.js
+│  │  │      style.css
+│  │  │      
+│  │  ├─silsila v1.0
+│  │  │      cards
+│  │  │      game.html
+│  │  │      index.html
+│  │  │      script.js
+│  │  │      style.css
+│  │  │      
+│  │  ├─silsila v1.1
+│  │  │      card.mp3
+│  │  │      cards
+│  │  │      devlog.txt
+│  │  │      error.mp3
+│  │  │      finish.mp3
+│  │  │      game.html
+│  │  │      gameover.mp3
+│  │  │      index.html
+│  │  │      script.js
+│  │  │      style.css
+│  │  │      
+│  │  └─sounds
+│  │          card.mp3
+│  │          clear.mp3
+│  │          click.mp3
+│  │          error.mp3
+│  │          hand.mp3
+│  │          lose.mp3
+│  │          
+│  └─SE
+│          gameover.mp3
+│          きらーん1.mp3
+│          カーソル移動2.mp3
+│          カード出せないerror.mp3
+│          クイズ出題1.mp3
+│          クイズ出題2.mp3
+│          クイズ正解2.mp3
+│          シャキーン3.mp3
+│          ショック2.mp3
+│          ショック6.mp3
+│          ゾウの鳴き声1.mp3
+│          バイオリン恐怖音2.mp3
+│          ビープ音1.mp3
+│          ホラータイトル表示音.mp3
+│          ポーカー役pokerhand.mp3
+│          爆発1.mp3
+│          
+└─Git
+    └─srt-merge-tool
+            .gitignore
+            jimakumerge.py
+            LICENSE
+            README.md
+            
