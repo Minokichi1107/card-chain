@@ -54,10 +54,23 @@
     <!-- RIGHT: GAME AREA -->
     <div id="gameArea">
 
-      <!-- TRACKER -->
+      <!-- TRACKER + INFO BAR -->
       <div id="trackerPanel">
-        <div id="trackerTitle">◆ CARD TRACKER ◆</div>
-        <div id="cardBoard"></div>
+        <div id="trackerLeft">
+          <div id="trackerTitle">◆ CARD TRACKER ◆</div>
+          <div id="cardBoard"></div>
+        </div>
+        <div id="trackerRight">
+          <div class="statBox chain-stat">
+            <span class="s-label">CHAIN</span>
+            <span class="s-value" id="chainVal">0</span>
+          </div>
+          <div class="statBox deck-stat">
+            <span class="s-label">DECK</span>
+            <span class="s-value" id="deckInfo">--</span>
+          </div>
+          <div id="msgBar">手札をクリックして出す</div>
+        </div>
       </div>
 
       <!-- FIELD -->
@@ -73,17 +86,8 @@
         <div id="hand"></div>
       </div>
 
-      <!-- BOTTOM BAR -->
+      <!-- BOTTOM BAR（ボタン類のみ） -->
       <div id="bottomBar">
-        <div class="statBox chain-stat">
-          <span class="s-label">CHAIN</span>
-          <span class="s-value" id="chainVal">0</span>
-        </div>
-        <div id="msgBar">手札をクリックして出す</div>
-        <div class="statBox deck-stat">
-          <span class="s-label">DECK</span>
-          <span class="s-value" id="deckInfo">--</span>
-        </div>
         <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
         <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
         <div id="volumeControl">

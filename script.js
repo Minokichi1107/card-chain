@@ -104,10 +104,9 @@ function refillAndCheck() {
   refillHand();
   const added = hand.length - prevLen;
 
-  render(); // まず現状を描画
-
   if (added === 0) {
-    // 補充なし→即チェック
+    // 補充なし→即render＆チェック
+    render();
     isAnimating = false;
     if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
     if(isStuck()) { triggerStuck(); return; }
@@ -115,32 +114,35 @@ function refillAndCheck() {
     return;
   }
 
-  // 補充カードだけめくりアニメ
+  // 補充後にrenderして正しいDOM生成
+  render();
+
+  // 補充カードだけめくりアニメ（render後のDOM要素に適用）
   let hDiv = document.getElementById("hand");
   let cardEls = hDiv.querySelectorAll(".card");
-  let done = 0;
+  let lastIdx = added - 1;
   for (let k = 0; k < added; k++) {
     const el = cardEls[prevLen + k];
-    if (!el) { done++; continue; }
-    // 初期状態を裏向き風に
+    if (!el) continue;
     el.style.transform = "translateY(-30px) rotateY(90deg)";
     el.style.opacity = "0";
     el.style.transition = "none";
+    // forceReflow
+    void el.offsetWidth;
     setTimeout(() => {
       playSound("card");
-      el.style.transition = `transform 0.3s ease ${k*0.12}s, opacity 0.15s ease ${k*0.12}s`;
-      el.style.transform = "translateY(0) rotateY(0deg)";
+      el.style.transition = `transform 0.3s ease, opacity 0.15s ease`;
+      el.style.transform = el.classList.contains("playable") ? "translateY(-8px) rotateY(0deg)" : "translateY(0) rotateY(0deg)";
       el.style.opacity = "1";
-      done++;
-      if (done === added) {
+      if (k === lastIdx) {
         setTimeout(() => {
           isAnimating = false;
           if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
           if(isStuck()) { triggerStuck(); return; }
           if(isPinch()) triggerPinch();
-        }, 300 + k * 120);
+        }, 350);
       }
-    }, k * 120 + 30);
+    }, k * 130);
   }
 }
 
@@ -383,10 +385,21 @@ function render() {
   document.getElementById("chainVal").innerText = chain;
   document.getElementById("deckInfo").innerText = deck.length;
 
-  // field glow
+  // field glow + gameArea背景色
   let fz = document.getElementById("fieldZone");
   fz.className = "";
-  if (chain>0) { let t=getTier(chain); if(t.fieldCls) fz.classList.add(t.fieldCls); }
+  let ga = document.getElementById("gameArea");
+  ga.classList.remove("chain-tier1","chain-tier2","chain-tier3","chain-tier4","chain-tier5");
+  if (chain>0) {
+    let t=getTier(chain);
+    if(t.fieldCls) fz.classList.add(t.fieldCls);
+    // chain段階に応じたgameAreaクラス
+    if      (chain>=50) ga.classList.add("chain-tier5");
+    else if (chain>=40) ga.classList.add("chain-tier4");
+    else if (chain>=30) ga.classList.add("chain-tier3");
+    else if (chain>=20) ga.classList.add("chain-tier2");
+    else if (chain>=10) ga.classList.add("chain-tier1");
+  }
 
   renderBoard();
 }
