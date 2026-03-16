@@ -1,6 +1,7 @@
 # Card Chain
 
 カードをつなげてチェーンを作るブラウザゲーム
+![Game Screenshot](screenshot.png)
 
 ## Play
 https://minokichi1107.github.io/card-chain/
