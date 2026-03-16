@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Card Chain</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- ゲームの見た目を定義するCSS -->
@@ -85,6 +85,7 @@
           <span class="s-value" id="deckInfo">--</span>
         </div>
         <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
+        <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
         <div id="volumeControl">
           <label>🔊</label>
           <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
@@ -114,5 +115,19 @@
 </div>
     <!-- ゲームロジック -->
     <script src="script.js"></script>
+
+<!-- HELP MODAL -->
+<div id="helpModal">
+  <div id="helpBox">
+    <h2>◆ RULE ◆</h2>
+    <ul>
+      <li><strong>同じスート or 同じ数字</strong>のカードを出してチェーンをつなげ！</li>
+      <li>チェーンが続くほど <strong>Chain Bonus</strong> が増える</li>
+      <li>手札にポーカー役が揃ったら次のカードを出すと <strong>ボーナス獲得</strong></li>
+      <li>出せるカードがなくなると <strong>GAME OVER</strong></li>
+    </ul>
+    <button id="helpClose" onclick="document.getElementById('helpModal').classList.remove('show')">CLOSE</button>
+  </div>
+</div>
 </body>
 </html>
