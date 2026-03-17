@@ -86,16 +86,33 @@ function refillHandAnimated(callback) {
   });
 }
 
-// ピンチ判定：出せるカードが1枚 かつ その1枚を出した後に繋がるカードが手札にない
+// ピンチ判定：出せるカードが1枚 かつ その後に繋がるカードが手札にない
 function isPinch() {
+  if (hand.length < 2) return false;
   let playableCards = hand.filter(h => playable(h, field));
   if (playableCards.length !== 1) return false;
-  if (hand.length < 2) return false;
-  // その1枚を仮に出した場合、残り手札から出せるカードがあるかチェック
+  // 仮出し後の残り手札から続けられるか確認
   let nextField = playableCards[0];
-  let restHand = hand.filter(h => h !== nextField);
-  let canContinue = restHand.some(h => playable(h, nextField));
-  return !canContinue;
+  let rest = hand.filter(h => h !== nextField);
+  let canContinue = rest.some(h => playable(h, nextField));
+  return !canContinue; // 続けられない時だけピンチ
+}
+
+// 補充後の共通チェック処理
+function afterRefillCheck() {
+  isAnimating = false;
+  if(hand.length===0 && deck.length===0) { setTimeout(()=>deckClear(),400); return; }
+  if(isStuck()) { triggerStuck(); return; }
+  // ピンチ判定：出せるカードが1枚で、その1枚を出した後に手札から繋がるカードがない
+  if(isPinch()) {
+    triggerPinch();
+  }
+}
+
+// ピンチ状態かどうか（毎回カードを出した後に呼ばれる）
+function checkPinchAfterPlay() {
+  if(isStuck()) return; // 手詰まりは別処理
+  if(isPinch()) triggerPinch();
 }
 
 // 補充＋ピンチ/詰まりチェックをまとめた共通処理
@@ -104,46 +121,36 @@ function refillAndCheck() {
   refillHand();
   const added = hand.length - prevLen;
 
+  render(); // 常にrenderを先に呼んでDOM確定
+
   if (added === 0) {
-    // 補充なし→即render＆チェック
-    render();
-    isAnimating = false;
-    if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
-    if(isStuck()) { triggerStuck(); return; }
-    if(isPinch()) triggerPinch();
+    afterRefillCheck();
     return;
   }
 
-  // 補充後にrenderして正しいDOM生成
-  render();
-
-  // 補充カードだけめくりアニメ（render後のDOM要素に適用）
+  // 補充カードのめくりアニメ
   let hDiv = document.getElementById("hand");
   let cardEls = hDiv.querySelectorAll(".card");
-  let lastIdx = added - 1;
+  const totalDelay = (added - 1) * 130 + 350;
+
   for (let k = 0; k < added; k++) {
     const el = cardEls[prevLen + k];
     if (!el) continue;
+    const isPlayable = el.classList.contains("playable");
     el.style.transform = "translateY(-30px) rotateY(90deg)";
     el.style.opacity = "0";
     el.style.transition = "none";
-    // forceReflow
     void el.offsetWidth;
-    setTimeout(() => {
+    setTimeout((elem, playable) => {
       playSound("card");
-      el.style.transition = `transform 0.3s ease, opacity 0.15s ease`;
-      el.style.transform = el.classList.contains("playable") ? "translateY(-8px) rotateY(0deg)" : "translateY(0) rotateY(0deg)";
-      el.style.opacity = "1";
-      if (k === lastIdx) {
-        setTimeout(() => {
-          isAnimating = false;
-          if(hand.length===0&&deck.length===0) { setTimeout(()=>deckClear(),400); return; }
-          if(isStuck()) { triggerStuck(); return; }
-          if(isPinch()) triggerPinch();
-        }, 350);
-      }
-    }, k * 130);
+      elem.style.transition = "transform 0.3s ease, opacity 0.15s ease";
+      elem.style.transform = playable ? "translateY(-8px) rotateY(0deg)" : "translateY(0) rotateY(0deg)";
+      elem.style.opacity = "1";
+    }, k * 130, el, isPlayable);
   }
+
+  // 全アニメ完了後にチェック
+  setTimeout(afterRefillCheck, totalDelay);
 }
 
 // ピンチ演出
@@ -393,12 +400,52 @@ function render() {
   if (chain>0) {
     let t=getTier(chain);
     if(t.fieldCls) fz.classList.add(t.fieldCls);
-    // chain段階に応じたgameAreaクラス
     if      (chain>=50) ga.classList.add("chain-tier5");
     else if (chain>=40) ga.classList.add("chain-tier4");
     else if (chain>=30) ga.classList.add("chain-tier3");
     else if (chain>=20) ga.classList.add("chain-tier2");
     else if (chain>=10) ga.classList.add("chain-tier1");
+  }
+
+  // ② CHAIN BONUSパネル：現在のchainに対応する行を常時反転
+  const BONUS_RANGES = [
+    { label:"10-13", min:10, max:13 },
+    { label:"14-16", min:14, max:16 },
+    { label:"17-19", min:17, max:19 },
+    { label:"20-22", min:20, max:22 },
+    { label:"23-25", min:23, max:25 },
+    { label:"26-28", min:26, max:28 },
+    { label:"29-31", min:29, max:31 },
+    { label:"32-34", min:32, max:34 },
+    { label:"35-37", min:35, max:37 },
+    { label:"38-40", min:38, max:40 },
+    { label:"41-43", min:41, max:43 },
+    { label:"44-46", min:44, max:46 },
+    { label:"47-49", min:47, max:49 },
+    { label:"50-52", min:50, max:52 },
+    { label:"CLEAR", min:53, max:999 },
+  ];
+  document.querySelectorAll('.chainBonusRow').forEach(r => r.classList.remove('current-range'));
+  let activeRange = BONUS_RANGES.find(r => chain >= r.min && chain <= r.max);
+  if (activeRange) {
+    let el = document.querySelector(`.chainBonusRow[data-label="${activeRange.label}"]`);
+    if (el) el.classList.add('current-range');
+  }
+
+  // ③ CHAINの数字色をtierに合わせて変更
+  const TIER_CHAIN_COLORS = [
+    { min:50,  color:"#fff",    shadow:"#fff" },
+    { min:40,  color:"#ff4444", shadow:"#ff0000" },
+    { min:30,  color:"#00ff64", shadow:"#00cc44" },
+    { min:20,  color:"#FFD700", shadow:"#FFA500" },
+    { min:10,  color:"#00e5ff", shadow:"#00aaff" },
+    { min:0,   color:"#00e5ff", shadow:"#00aaff" },
+  ];
+  let chainValEl = document.getElementById("chainVal");
+  let tierColor = TIER_CHAIN_COLORS.find(t => chain >= t.min);
+  if (tierColor) {
+    chainValEl.style.color = tierColor.color;
+    chainValEl.style.textShadow = `0 0 12px ${tierColor.shadow}`;
   }
 
   renderBoard();
@@ -462,6 +509,25 @@ function triggerBulkWinEffect() {
 // マイルストーンのchainセット（tryPlayで更新）
 const MILESTONE_CHAINS = new Set([10,14,17,20,23,26,29,32,35,38,41,44,47,50,53]);
 
+// チェーンボーナステーブル（全マイルストーン一律+10、CLEARのみ+200）
+const CHAIN_MILESTONES = [
+  { at: 10, reward: 10, label: "10-13" },
+  { at: 14, reward: 10, label: "14-16" },
+  { at: 17, reward: 10, label: "17-19" },
+  { at: 20, reward: 10, label: "20-22" },
+  { at: 23, reward: 10, label: "23-25" },
+  { at: 26, reward: 10, label: "26-28" },
+  { at: 29, reward: 10, label: "29-31" },
+  { at: 32, reward: 10, label: "32-34" },
+  { at: 35, reward: 10, label: "35-37" },
+  { at: 38, reward: 10, label: "38-40" },
+  { at: 41, reward: 10, label: "41-43" },
+  { at: 44, reward: 10, label: "44-46" },
+  { at: 47, reward: 10, label: "47-49" },
+  { at: 50, reward: 10, label: "50-52" },
+  { at: 53, reward: 200, label: "CLEAR" },
+];
+
 function showChainBanner(c, isMilestone) {
   let el=document.getElementById("chainText");
   el.classList.remove("show","rainbow");
@@ -520,28 +586,6 @@ function tryPlay(i) {
   chain++;
   if(chain>maxChain) maxChain=chain;
 
-  // チェーンボーナステーブル（マイルストーン到達時のみ加算）
-  const CHAIN_MILESTONES = [
-    { at: 10, reward: 10,  label: "10-13" },
-    { at: 14, reward: 20,  label: "14-16" },
-    { at: 17, reward: 30,  label: "17-19" },
-    { at: 20, reward: 40,  label: "20-22" },
-    { at: 23, reward: 50,  label: "23-25" },
-    { at: 26, reward: 60,  label: "26-28" },
-    { at: 29, reward: 70,  label: "29-31" },
-    { at: 32, reward: 80,  label: "32-34" },
-    { at: 35, reward: 90,  label: "35-37" },
-    { at: 38, reward: 100, label: "38-40" },
-    { at: 41, reward: 110, label: "41-43" },
-    { at: 44, reward: 120, label: "44-46" },
-    { at: 47, reward: 130, label: "47-49" },
-    { at: 50, reward: 140, label: "50-52" },
-    { at: 53, reward: 200, label: "CLEAR" },
-  ];
-  // ボーナスを10→20→30ペース（等差+10）に上書き
-  CHAIN_MILESTONES.forEach((m, idx) => {
-    if (m.label !== "CLEAR") m.reward = (idx + 1) * 10;
-  });
   let milestone = CHAIN_MILESTONES.find(m => m.at === chain) || null;
   let chainReward = milestone ? milestone.reward : 0;
   let pokerBonus  = pokerHand ? pokerHand.multi : 0;

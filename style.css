@@ -112,6 +112,20 @@ width: 200px;
 }
 .payRow.active .multiplier { color: var(--gold); text-shadow: 0 0 16px var(--gold), 0 0 30px var(--gold2); }
 
+/* CHAIN BONUSパネル現在の範囲を常時反転 */
+.chainBonusRow.current-range {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: var(--cyan);
+  color: #fff;
+}
+.chainBonusRow.current-range span { color: var(--cyan) !important; font-weight: 700; }
+/* milestoneヒット時のactiveはcurrent-rangeより優先 */
+.chainBonusRow.active.current-range {
+  background: rgba(255, 215, 0, 0.6);
+  border-color: var(--gold);
+}
+.chainBonusRow.active.current-range span { color: #000 !important; }
+
 /* ===== RIGHT: GAME AREA ===== */
 #gameArea {
   display: flex; flex-direction: column;
@@ -132,15 +146,15 @@ width: 200px;
   min-width: 0;
 }
 #trackerRight {
-  width: 110px;
+  width: 130px;
   flex-shrink: 0;
   border-left: 1px solid var(--border);
-  padding-left: 10px;
+  padding-left: 12px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
 }
 #trackerTitle {
   font-size: 12px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 4px;
@@ -401,13 +415,16 @@ width: 200px;
 }
 #pokerBanner.show { animation: chainPop 0.5s cubic-bezier(0.175,0.885,0.32,1.275); }
 
-/* BOTTOM BAR（ボタン類のみ） */
+/* BOTTOM BAR */
 #bottomBar {
   background: #000;
   border-top: 2px solid var(--border);
-  padding: 6px 16px;
-  display: flex; align-items: center; justify-content: flex-end;
+  padding: 8px 16px;
+  display: flex; align-items: center; justify-content: space-between;
   gap: 10px;
+}
+#bottomBtns {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0;
 }
 .statBox {
   text-align: center;
@@ -417,23 +434,22 @@ width: 200px;
 }
 .statBox .s-value {
   font-family: 'Orbitron', sans-serif;
-  font-size: 20px; font-weight: 700; color: var(--gold);
-  text-shadow: 0 0 10px var(--gold2);
+  font-size: 28px; font-weight: 900; color: var(--gold);
+  text-shadow: 0 0 12px var(--gold2);
+  line-height: 1;
 }
-.statBox.chain-stat .s-value { color: var(--cyan); text-shadow: 0 0 10px var(--cyan); }
-.statBox.deck-stat .s-value { color: #888; text-shadow: none; font-size:16px; }
+.statBox.chain-stat .s-value { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); transition: color 0.5s, text-shadow 0.5s; }
+.statBox.deck-stat .s-value { color: #888; text-shadow: none; font-size:22px; }
 
 #msgBar {
-  font-size: 11px; color: var(--cyan); letter-spacing: 0.5px;
-  text-align: center;
-  width: 100%;
-  min-height: 28px;
-  display: flex; align-items: center; justify-content: center;
-  line-height: 1.3;
+  font-size: 15px; color: var(--cyan); letter-spacing: 1px;
+  flex: 1;
+  text-align: left;
+  min-height: 20px;
+  display: flex; align-items: center;
   font-family: 'Rajdhani', sans-serif;
   font-weight: 600;
-  border-top: 1px solid var(--border);
-  padding-top: 4px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 #msgBar.error { color: #ff6b6b; }
 #msgBar.success { color: #2ecc71; }

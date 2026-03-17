@@ -34,19 +34,19 @@
   <div style="margin-top: 30px; border-top: 2px solid var(--border); padding-top: 6px;">
   <div id="payoutTitle" style="color:var(--gold);">◆ CHAIN BONUS ◆</div>
   <div class="payRow chainBonusRow" data-label="10-13"><span>10-13</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="14-16"><span>14-16</span><span style="color:var(--gold);">+20</span></div>
-  <div class="payRow chainBonusRow" data-label="17-19"><span>17-19</span><span style="color:var(--gold);">+30</span></div>
-  <div class="payRow chainBonusRow" data-label="20-22"><span>20-22</span><span style="color:var(--gold);">+40</span></div>
-  <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+50</span></div>
-  <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+60</span></div>
-  <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+70</span></div>
-  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+80</span></div>
-  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+90</span></div>
-  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+100</span></div>
-  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+110</span></div>
-  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+120</span></div>
-  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+130</span></div>
-  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+140</span></div>
+  <div class="payRow chainBonusRow" data-label="14-16"><span>14-16</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="17-19"><span>17-19</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="20-22"><span>20-22</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+10</span></div>
   <div class="payRow chainBonusRow" data-label="CLEAR"><span>🏆 CLEAR</span><span style="color:var(--gold);">+200</span></div>
   </div>
 </div>
@@ -69,7 +69,6 @@
             <span class="s-label">DECK</span>
             <span class="s-value" id="deckInfo">--</span>
           </div>
-          <div id="msgBar">手札をクリックして出す</div>
         </div>
       </div>
 
@@ -86,14 +85,17 @@
         <div id="hand"></div>
       </div>
 
-      <!-- BOTTOM BAR（ボタン類のみ） -->
+      <!-- BOTTOM BAR -->
       <div id="bottomBar">
-        <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
-        <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
-        <div id="volumeControl">
-          <label>🔊</label>
-          <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
-            oninput="setVolume(parseFloat(this.value))">
+        <div id="msgBar">手札をクリックして出す</div>
+        <div id="bottomBtns">
+          <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
+          <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
+          <div id="volumeControl">
+            <label>🔊</label>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
+              oninput="setVolume(parseFloat(this.value))">
+          </div>
         </div>
       </div>
       <div id="insertCoin">INSERT COIN TO CONTINUE</div>
