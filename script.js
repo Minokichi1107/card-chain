@@ -509,22 +509,22 @@ function triggerBulkWinEffect() {
 // マイルストーンのchainセット（tryPlayで更新）
 const MILESTONE_CHAINS = new Set([10,14,17,20,23,26,29,32,35,38,41,44,47,50,53]);
 
-// チェーンボーナステーブル（全マイルストーン一律+10、CLEARのみ+200）
+// チェーンボーナステーブル（高チェーン帯ほど増加）
 const CHAIN_MILESTONES = [
-  { at: 10, reward: 10, label: "10-13" },
-  { at: 14, reward: 10, label: "14-16" },
-  { at: 17, reward: 10, label: "17-19" },
-  { at: 20, reward: 10, label: "20-22" },
-  { at: 23, reward: 10, label: "23-25" },
-  { at: 26, reward: 10, label: "26-28" },
-  { at: 29, reward: 10, label: "29-31" },
-  { at: 32, reward: 10, label: "32-34" },
-  { at: 35, reward: 10, label: "35-37" },
-  { at: 38, reward: 10, label: "38-40" },
-  { at: 41, reward: 10, label: "41-43" },
-  { at: 44, reward: 10, label: "44-46" },
-  { at: 47, reward: 10, label: "47-49" },
-  { at: 50, reward: 10, label: "50-52" },
+  { at: 10, reward:  10, label: "10-13" },
+  { at: 14, reward:  10, label: "14-16" },
+  { at: 17, reward:  10, label: "17-19" },
+  { at: 20, reward:  10, label: "20-22" },
+  { at: 23, reward:  10, label: "23-25" },
+  { at: 26, reward:  10, label: "26-28" },
+  { at: 29, reward:  10, label: "29-31" },
+  { at: 32, reward:  20, label: "32-34" },
+  { at: 35, reward:  20, label: "35-37" },
+  { at: 38, reward:  20, label: "38-40" },
+  { at: 41, reward:  30, label: "41-43" },
+  { at: 44, reward:  30, label: "44-46" },
+  { at: 47, reward:  30, label: "47-49" },
+  { at: 50, reward:  50, label: "50-52" },
   { at: 53, reward: 200, label: "CLEAR" },
 ];
 
@@ -547,6 +547,9 @@ function showChainBanner(c, isMilestone) {
 function tryPlay(i) {
 
   if(isAnimating) return;
+  // isAnimatingが詰まった場合のフェイルセーフ（2秒で強制解除）
+  if (window._animTimeout) clearTimeout(window._animTimeout);
+  window._animTimeout = setTimeout(() => { isAnimating = false; }, 2000);
 
   // 最初の1枚：chain=1スタート
   if(field === null){
@@ -588,7 +591,8 @@ function tryPlay(i) {
 
   let milestone = CHAIN_MILESTONES.find(m => m.at === chain) || null;
   let chainReward = milestone ? milestone.reward : 0;
-  let pokerBonus  = pokerHand ? pokerHand.multi : 0;
+  // ポーカーボーナス：chain数×multiの5分の1（最低multi枚保証）
+  let pokerBonus  = pokerHand ? Math.max(pokerHand.multi, Math.floor(chain * pokerHand.multi / 5)) : 0;
   let total       = chainReward + pokerBonus;
 
   // 加算＆即時表示反映
@@ -664,20 +668,64 @@ function triggerStuck() {
 
 // ===== END =====
 function gameOver(finalMedals, finalMaxChain) {
-  // 引数がない場合はグローバル変数を使用
   let m = (finalMedals !== undefined) ? finalMedals : medals;
   let mc = (finalMaxChain !== undefined) ? finalMaxChain : maxChain;
   playSound("lose");
   document.getElementById("gameOverScore").innerHTML=
     `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
   document.getElementById("gameOverScreen").classList.add("show");
+  addRankingEntry(m, mc, false);
 }
 function deckClear() {
   playSound("clear");
   document.getElementById("clearScore").innerHTML=
     `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}`;
   document.getElementById("clearScreen").classList.add("show");
+  addRankingEntry(medals, maxChain, true);
 }
+
+// ===== RANKING =====
+const RANKING_KEY = "cardchain_ranking";
+
+function loadRanking() {
+  try { return JSON.parse(localStorage.getItem(RANKING_KEY)) || []; }
+  catch(e) { return []; }
+}
+function saveRanking(data) {
+  localStorage.setItem(RANKING_KEY, JSON.stringify(data));
+}
+function addRankingEntry(m, mc, cleared) {
+  let data = loadRanking();
+  const now = new Date();
+  const dateStr = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  data.push({ medals: m, maxChain: mc, cleared, date: dateStr });
+  data.sort((a,b) => b.medals - a.medals);
+  data = data.slice(0, 10);
+  saveRanking(data);
+}
+function renderRanking() {
+  let data = loadRanking();
+  let el = document.getElementById("rankingList");
+  if (!el) return;
+  el.innerHTML = "";
+  if (data.length === 0) {
+    el.innerHTML = '<div style="color:#555;text-align:center;padding:10px;">まだ記録がありません</div>';
+    return;
+  }
+  data.forEach((r, i) => {
+    let row = document.createElement("div");
+    row.className = "rankRow" + (i === 0 ? " rank-top" : "");
+    let crown = i===0?"🥇":i===1?"🥈":i===2?"🥉":`${i+1}.`;
+    let clearedBadge = r.cleared ? '<span class="rank-clear">CLEAR</span>' : '';
+    row.innerHTML = `
+      <span class="rank-pos">${crown}</span>
+      <span class="rank-score">${r.medals}<small>medals</small>${clearedBadge}</span>
+      <span class="rank-chain">⛓${r.maxChain}</span>
+      <span class="rank-date">${r.date}</span>`;
+    el.appendChild(row);
+  });
+}
+
 
 // ===== START =====
 function start() {

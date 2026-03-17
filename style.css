@@ -673,3 +673,55 @@ width: 200px;
   transition: 0.15s;
 }
 #helpClose:hover { transform: scale(1.05); }
+
+/* ===== ランキングモーダル ===== */
+#rankingBox {
+  background: linear-gradient(180deg, #0d1829, #060d18);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  padding: 24px 28px;
+  max-width: 520px; width: 95%;
+  box-shadow: 0 0 40px rgba(255,215,0,0.2);
+}
+#rankingBox h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px; font-weight: 900;
+  color: var(--gold); text-shadow: 0 0 12px var(--gold2);
+  letter-spacing: 4px; text-align: center; margin-bottom: 16px;
+}
+#rankingList { display: flex; flex-direction: column; gap: 4px; }
+.rankRow {
+  display: grid;
+  grid-template-columns: 32px 1fr 50px 70px;
+  align-items: center; gap: 6px;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 4px;
+  border-left: 2px solid #1a3a5c;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 14px; color: #ccc;
+}
+.rankRow.rank-top {
+  background: rgba(255,215,0,0.1);
+  border-left-color: var(--gold);
+}
+.rank-pos { font-size: 16px; text-align: center; }
+.rank-score { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; text-align: right; }
+.rank-score small { font-size: 9px; color: #888; margin-left: 2px; }
+.rank-chain { color: var(--cyan); font-size: 13px; text-align: center; }
+.rank-date { color: #555; font-size: 11px; text-align: right; }
+.rank-clear {
+  font-size: 9px; background: #00ff88; color: #000;
+  padding: 1px 4px; border-radius: 2px; margin-left: 4px;
+  font-weight: 700; letter-spacing: 1px;
+}
+
+/* ランキングボタン */
+#rankingBtn {
+  font-size: 16px; padding: 6px 10px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 4px; cursor: pointer;
+  transition: 0.15s;
+}
+#rankingBtn:hover { background: rgba(255,215,0,0.15); box-shadow: 0 0 10px rgba(255,215,0,0.4); }

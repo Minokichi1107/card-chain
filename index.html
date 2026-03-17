@@ -40,13 +40,13 @@
   <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+10</span></div>
   <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+10</span></div>
   <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+10</span></div>
+  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+20</span></div>
+  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+20</span></div>
+  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+20</span></div>
+  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+30</span></div>
+  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+30</span></div>
+  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+30</span></div>
+  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+50</span></div>
   <div class="payRow chainBonusRow" data-label="CLEAR"><span>🏆 CLEAR</span><span style="color:var(--gold);">+200</span></div>
   </div>
 </div>
@@ -91,6 +91,7 @@
         <div id="bottomBtns">
           <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
           <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
+          <button id="rankingBtn" onclick="renderRanking();document.getElementById('rankingModal').classList.add('show')">🏆</button>
           <div id="volumeControl">
             <label>🔊</label>
             <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
@@ -133,6 +134,18 @@
       <li>出せるカードがなくなると <strong>GAME OVER</strong></li>
     </ul>
     <button id="helpClose" onclick="document.getElementById('helpModal').classList.remove('show')">CLOSE</button>
+  </div>
+</div>
+<!-- RANKING MODAL -->
+<div id="rankingModal" class="overlay">
+  <div id="rankingBox">
+    <h2>🏆 RANKING 🏆</h2>
+    <div id="rankingList"></div>
+    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;">
+      <button class="overlay-btn" onclick="document.getElementById('rankingModal').classList.remove('show')">CLOSE</button>
+      <button class="overlay-btn" id="clearRankBtn" style="background:linear-gradient(180deg,#444,#222);box-shadow:none;"
+        onclick="if(confirm('ランキングをリセットしますか？')){localStorage.removeItem('cardchain_ranking');renderRanking();}">RESET</button>
+    </div>
   </div>
 </div>
 </body>
