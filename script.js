@@ -697,7 +697,7 @@ function saveRanking(data) {
 function addRankingEntry(m, mc, cleared) {
   let data = loadRanking();
   const now = new Date();
-  const dateStr = `${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
   data.push({ medals: m, maxChain: mc, cleared, date: dateStr });
   data.sort((a,b) => b.medals - a.medals);
   data = data.slice(0, 10);

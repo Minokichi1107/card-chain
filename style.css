@@ -146,7 +146,7 @@ width: 200px;
   min-width: 0;
 }
 #trackerRight {
-  width: 130px;
+  width: 150px;
   flex-shrink: 0;
   border-left: 1px solid var(--border);
   padding-left: 12px;
@@ -154,7 +154,7 @@ width: 200px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 20px;
 }
 #trackerTitle {
   font-size: 12px; color: var(--cyan); letter-spacing: 3px; margin-bottom: 4px;
@@ -692,7 +692,7 @@ width: 200px;
 #rankingList { display: flex; flex-direction: column; gap: 4px; }
 .rankRow {
   display: grid;
-  grid-template-columns: 32px 1fr 50px 70px;
+  grid-template-columns: 32px 1fr 50px 100px;
   align-items: center; gap: 6px;
   padding: 6px 8px;
   background: rgba(255,255,255,0.03);
@@ -709,7 +709,7 @@ width: 200px;
 .rank-score { color: var(--gold); font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; text-align: right; }
 .rank-score small { font-size: 9px; color: #888; margin-left: 2px; }
 .rank-chain { color: var(--cyan); font-size: 13px; text-align: center; }
-.rank-date { color: #555; font-size: 11px; text-align: right; }
+.rank-date { color: #aaa; font-size: 13px; font-family: 'Rajdhani', sans-serif; font-weight: 500; text-align: right; letter-spacing: 0.5px; }
 .rank-clear {
   font-size: 9px; background: #00ff88; color: #000;
   padding: 1px 4px; border-radius: 2px; margin-left: 4px;
