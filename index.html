@@ -112,16 +112,40 @@
 <div class="overlay" id="gameOverScreen">
   <div id="gameOverTitle">GAME OVER</div>
   <div class="overlay-score" id="gameOverScore"></div>
-  <button class="overlay-btn" onclick="start()">▶ PLAY AGAIN</button>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="overlay-btn" onclick="start()">▶ PLAY AGAIN</button>
+    <button class="overlay-btn" id="doubleUpBtnGO" onclick="startDoubleUp()">🂠 DOUBLE UP</button>
+  </div>
 </div>
 <!-- CLEAR -->
 <div class="overlay" id="clearScreen">
   <div id="clearTitle">★ DECK CLEAR ★</div>
   <div class="overlay-score" id="clearScore"></div>
-  <button class="overlay-btn" id="clearRetryBtn" onclick="start()">▶ PLAY AGAIN</button>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <button class="overlay-btn" id="clearRetryBtn" onclick="start()">▶ PLAY AGAIN</button>
+    <button class="overlay-btn" id="doubleUpBtnCL" onclick="startDoubleUp()">🂠 DOUBLE UP</button>
+  </div>
 </div>
-    <!-- ゲームロジック -->
-    <script src="script.js"></script>
+<!-- DOUBLE UP MODAL -->
+<div id="doubleUpModal" class="overlay">
+  <div id="doubleUpBox">
+    <div id="duTitle">🂠 DOUBLE UP</div>
+    <div id="duMedals"></div>
+    <div id="duCardArea">
+      <div id="duCard"></div>
+    </div>
+    <div id="duMessage"></div>
+    <div id="duButtons">
+      <button class="du-btn" id="duHighBtn" onclick="doubleUpGuess('high')">▲ HIGH</button>
+      <button class="du-btn" id="duLowBtn"  onclick="doubleUpGuess('low')">▼ LOW</button>
+    </div>
+    <div id="duResultButtons" style="display:none;">
+      <button class="overlay-btn" onclick="startDoubleUp()">🂠 AGAIN</button>
+      <button class="overlay-btn" onclick="closeDoubleUp()">✓ COLLECT</button>
+      <button class="overlay-btn" onclick="start()">▶ NEW GAME</button>
+    </div>
+  </div>
+</div>
 
 <!-- HELP MODAL -->
 <div id="helpModal">
@@ -148,5 +172,7 @@
     </div>
   </div>
 </div>
+    <!-- ゲームロジック -->
+    <script src="script.js"></script>
 </body>
 </html>

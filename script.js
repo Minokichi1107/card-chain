@@ -674,6 +674,7 @@ function gameOver(finalMedals, finalMaxChain) {
   document.getElementById("gameOverScore").innerHTML=
     `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
   document.getElementById("gameOverScreen").classList.add("show");
+  document.getElementById("doubleUpBtnGO").style.display = m >= 1 ? "" : "none";
   addRankingEntry(m, mc, false);
 }
 function deckClear() {
@@ -681,7 +682,158 @@ function deckClear() {
   document.getElementById("clearScore").innerHTML=
     `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}`;
   document.getElementById("clearScreen").classList.add("show");
+  document.getElementById("doubleUpBtnCL").style.display = medals >= 1 ? "" : "none";
   addRankingEntry(medals, maxChain, true);
+}
+
+// ===== DOUBLE UP =====
+let duDeck = [];
+let duStreak = 0;
+const DU_MAX_STREAK = 5;
+// 賭け設定（将来ハーフ対応用）
+const DU_BET_MODES = {
+  all:  (m) => m,
+  half: (m) => Math.floor(m / 2),
+};
+let duBetMode = "all"; // 現在は全額のみ
+
+function duMakeFullDeck() {
+  let d = [];
+  for (let s of ["♠","♣","♦","♥"]) for (let r of [1,2,3,4,5,6,7,8,9,10,11,12,13]) d.push({suit:s,rank:r});
+  d.push({suit:"JOKER",rank:0});
+  d.sort(() => Math.random() - 0.5);
+  return d;
+}
+
+function duCardValue(c) {
+  // A=1（最弱）、2〜13そのまま、JOKER=0（無効）
+  return c.rank;
+}
+
+function duRenderCard(c, el) {
+  el.innerHTML = "";
+  if (!c) { el.innerHTML = '<div class="du-card-back">🂠</div>'; return; }
+  let card = makeCardEl(c);
+  card.style.width = "100%";
+  card.style.height = "100%";
+  card.style.position = "absolute";
+  card.style.cursor = "default";
+  el.appendChild(card);
+}
+
+function startDoubleUp() {
+  if (medals < 1) return;
+  if (duStreak >= DU_MAX_STREAK) {
+    alert("ダブルアップは最大5回までです！COLLECTしてください。");
+    return;
+  }
+  // 全オーバーレイを隠す
+  ["gameOverScreen","clearScreen"].forEach(id =>
+    document.getElementById(id).classList.remove("show")
+  );
+  duDeck = duMakeFullDeck();
+  document.getElementById("doubleUpModal").classList.add("show");
+  document.getElementById("duResultButtons").style.display = "none";
+  document.getElementById("duButtons").style.display = "";
+  updateDuUI();
+  // 最初のカードをめくる
+  drawDuCard();
+}
+
+let duCurrentCard = null;
+
+function drawDuCard() {
+  // ジョーカーをスキップ
+  let c;
+  do { c = duDeck.pop(); } while (c && c.suit === "JOKER" && duDeck.length > 0);
+  if (!c || c.suit === "JOKER") {
+    // ジョーカーなら引き直し
+    duDeck = duMakeFullDeck();
+    drawDuCard();
+    return;
+  }
+  duCurrentCard = c;
+  let el = document.getElementById("duCard");
+  // 裏向きから表向きにフリップ
+  el.innerHTML = '<div class="du-card-back">🂠</div>';
+  el.style.transform = "rotateY(90deg)";
+  el.style.transition = "transform 0.15s";
+  setTimeout(() => {
+    duRenderCard(c, el);
+    el.style.transform = "rotateY(0deg)";
+    playSound("card");
+  }, 150);
+  document.getElementById("duMessage").textContent = "HIGH か LOW を選べ！";
+  updateDuUI();
+}
+
+function updateDuUI() {
+  let bet = DU_BET_MODES[duBetMode](medals);
+  document.getElementById("duMedals").innerHTML =
+    `MEDALS: <span style="color:var(--gold)">${medals}</span> &nbsp;|&nbsp; BET: <span style="color:#ff4">${bet}</span> &nbsp;|&nbsp; ${duStreak}/${DU_MAX_STREAK}回`;
+  // 5回達したらAGAINを隠す
+  let againBtn = document.getElementById("duResultButtons").querySelector("button:first-child");
+  if (againBtn) againBtn.style.display = duStreak >= DU_MAX_STREAK ? "none" : "";
+}
+
+function doubleUpGuess(guess) {
+  if (!duCurrentCard) return;
+  document.getElementById("duButtons").style.display = "none";
+
+  // 次のカード（ジョーカースキップ）
+  let next;
+  do { next = duDeck.pop(); } while (next && next.suit === "JOKER" && duDeck.length > 0);
+  if (!next || next.suit === "JOKER") { duDeck = duMakeFullDeck(); doubleUpGuess(guess); return; }
+
+  // 結果カードをアニメ表示
+  let el = document.getElementById("duCard");
+  el.style.transform = "rotateY(90deg)";
+  el.style.transition = "transform 0.15s";
+  setTimeout(() => {
+    duRenderCard(next, el);
+    el.style.transform = "rotateY(0deg)";
+    playSound("card");
+
+    let bet = DU_BET_MODES[duBetMode](medals);
+    let curVal = duCardValue(duCurrentCard);
+    let nextVal = duCardValue(next);
+    let won = (guess === "high" && nextVal > curVal) || (guess === "low" && nextVal < curVal);
+    let draw = nextVal === curVal;
+    let msg = document.getElementById("duMessage");
+
+    if (draw || !won) {
+      // 負け（同数も負け）
+      medals -= bet;
+      document.getElementById("medal").innerText = medals;
+      playSound("error");
+      msg.innerHTML = draw
+        ? `<span style="color:#ff6b6b">同数… 負け！ -${bet} medals</span>`
+        : `<span style="color:#ff6b6b">ハズレ！ -${bet} medals</span>`;
+      duStreak = 0;
+      document.getElementById("duResultButtons").style.display = "";
+      // メダル0になったらAGAINを隠す
+      if (medals < 1) {
+        document.getElementById("duResultButtons").querySelectorAll("button")[0].style.display = "none";
+      }
+    } else {
+      // 勝ち
+      medals += bet;
+      document.getElementById("medal").innerText = medals;
+      playSound("hand");
+      msg.innerHTML = `<span style="color:#00ff88">正解！ +${bet} medals 🎉</span>`;
+      duStreak++;
+      duCurrentCard = next;
+      document.getElementById("duResultButtons").style.display = "";
+      updateDuUI();
+    }
+    addRankingEntry(medals, maxChain, false);
+  }, 150);
+}
+
+function closeDoubleUp() {
+  document.getElementById("doubleUpModal").classList.remove("show");
+  duStreak = 0;
+  duCurrentCard = null;
 }
 
 // ===== RANKING =====
@@ -739,6 +891,9 @@ function start() {
      
   deck=[];hand=[];discard=[];
   medals=0;chain=0;maxChain=0;isAnimating=false;
+  duStreak=0; duCurrentCard=null;
+  let duModal = document.getElementById("doubleUpModal");
+  if (duModal) duModal.classList.remove("show");
   document.getElementById("gameOverScreen").classList.remove("show");
   document.getElementById("clearScreen").classList.remove("show");
   document.getElementById("chainText").classList.remove("show","rainbow");

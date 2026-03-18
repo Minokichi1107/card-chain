@@ -725,3 +725,75 @@ width: 200px;
   transition: 0.15s;
 }
 #rankingBtn:hover { background: rgba(255,215,0,0.15); box-shadow: 0 0 10px rgba(255,215,0,0.4); }
+
+/* ===== DOUBLE UP ===== */
+#doubleUpBox {
+  background: linear-gradient(180deg, #0a0f1e, #050a14);
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  padding: 28px 32px;
+  max-width: 380px; width: 92%;
+  box-shadow: 0 0 50px rgba(255,215,0,0.25);
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+#duTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px; font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 16px var(--gold2), 0 0 32px var(--gold2);
+  letter-spacing: 4px;
+}
+#duMedals {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 15px; color: #aaa; letter-spacing: 1px;
+}
+#duCardArea {
+  width: 110px; height: 154px;
+  position: relative;
+}
+#duCard {
+  width: 100%; height: 100%;
+  position: relative;
+  transition: transform 0.15s;
+}
+.du-card-back {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #0a1a3a 25%, #0d2550 50%, #0a1a3a 75%);
+  border: 2px solid #2a4a8a;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  box-shadow: 2px 4px 12px rgba(0,0,0,0.6);
+}
+#duMessage {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 2px; min-height: 22px;
+  color: var(--cyan);
+}
+#duButtons {
+  display: flex; gap: 16px;
+}
+.du-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px; font-weight: 900;
+  letter-spacing: 2px; padding: 12px 28px;
+  border: none; border-radius: 6px; cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+#duHighBtn {
+  background: linear-gradient(180deg, #0088ff, #0055bb);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0,136,255,0.5);
+}
+#duHighBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,136,255,0.7); }
+#duLowBtn {
+  background: linear-gradient(180deg, #ff4444, #cc0000);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(255,68,68,0.5);
+}
+#duLowBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,68,68,0.7); }
+#duResultButtons {
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
