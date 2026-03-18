@@ -777,23 +777,107 @@ width: 200px;
 }
 .du-btn {
   font-family: 'Orbitron', sans-serif;
-  font-size: 14px; font-weight: 900;
-  letter-spacing: 2px; padding: 12px 28px;
-  border: none; border-radius: 6px; cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s;
+  font-size: 18px; font-weight: 900;
+  letter-spacing: 3px; padding: 18px 40px;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative; overflow: hidden;
+}
+.du-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  pointer-events: none;
 }
 #duHighBtn {
-  background: linear-gradient(180deg, #0088ff, #0055bb);
+  background: linear-gradient(180deg, #22aaff, #0066cc);
   color: #fff;
-  box-shadow: 0 4px 16px rgba(0,136,255,0.5);
+  border: 2px solid #44ccff;
+  box-shadow: 0 6px 24px rgba(0,136,255,0.6), 0 0 40px rgba(0,180,255,0.3);
+  text-shadow: 0 0 10px rgba(100,200,255,0.8);
 }
-#duHighBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,136,255,0.7); }
+#duHighBtn:hover {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: 0 12px 36px rgba(0,136,255,0.8), 0 0 60px rgba(0,180,255,0.5);
+}
 #duLowBtn {
-  background: linear-gradient(180deg, #ff4444, #cc0000);
+  background: linear-gradient(180deg, #ff5555, #cc0000);
   color: #fff;
-  box-shadow: 0 4px 16px rgba(255,68,68,0.5);
+  border: 2px solid #ff8888;
+  box-shadow: 0 6px 24px rgba(255,68,68,0.6), 0 0 40px rgba(255,50,50,0.3);
+  text-shadow: 0 0 10px rgba(255,150,150,0.8);
 }
-#duLowBtn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(255,68,68,0.7); }
+#duLowBtn:hover {
+  transform: translateY(-5px) scale(1.04);
+  box-shadow: 0 12px 36px rgba(255,68,68,0.8), 0 0 60px rgba(255,50,50,0.5);
+}
 #duResultButtons {
   display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+}
+
+/* ===== CREDIT BAR ===== */
+#creditBar {
+  background: #000;
+  border-bottom: 2px solid var(--gold);
+  padding: 6px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+#creditLeft {
+  display: flex; align-items: baseline; gap: 8px;
+}
+#creditLabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; color: var(--cyan); letter-spacing: 3px;
+}
+#creditVal {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px; font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 12px var(--gold2), 0 0 24px var(--gold2);
+  min-width: 60px;
+}
+#betArea {
+  display: flex; align-items: center; gap: 6px;
+}
+#betLabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px; color: #888; letter-spacing: 3px;
+  margin-right: 2px;
+}
+.betBtn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px; font-weight: 700;
+  width: 36px; height: 36px;
+  background: #0a0f1e;
+  color: #555;
+  border: 1px solid #1a3a5c;
+  border-radius: 4px; cursor: pointer;
+  transition: all 0.15s;
+}
+.betBtn.active {
+  background: linear-gradient(180deg, var(--gold), var(--gold2));
+  color: #000;
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(255,215,0,0.6);
+  font-weight: 900;
+}
+.betBtn:hover:not(.disabled):not(.active) {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.betBtn.disabled {
+  opacity: 0.25; cursor: not-allowed;
+}
+#creditResetBtn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  padding: 5px 10px;
+  background: transparent;
+  color: #444; border: 1px solid #333;
+  border-radius: 4px; cursor: pointer;
+  transition: 0.15s;
+}
+#creditResetBtn:hover {
+  color: #ff6b6b; border-color: #ff6b6b;
 }

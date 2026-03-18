@@ -17,6 +17,22 @@
     <h1>★ CARD CHAIN ★</h1>
     <div class="credits">MEDALS: <span id="medal">0</span></div>
   </div>
+  <!-- CREDIT BAR -->
+  <div id="creditBar">
+    <div id="creditLeft">
+      <span id="creditLabel">CREDIT</span>
+      <span id="creditVal">0</span>
+    </div>
+    <div id="betArea">
+      <span id="betLabel">BET</span>
+      <button class="betBtn" data-bet="1" onclick="setBet(1)">1</button>
+      <button class="betBtn" data-bet="2" onclick="setBet(2)">2</button>
+      <button class="betBtn" data-bet="3" onclick="setBet(3)">3</button>
+      <button class="betBtn" data-bet="4" onclick="setBet(4)">4</button>
+      <button class="betBtn" data-bet="5" onclick="setBet(5)">5</button>
+    </div>
+    <button id="creditResetBtn" onclick="resetCredit()">RESET</button>
+  </div>
 
   <!-- MAIN LAYOUT -->
   <div id="mainLayout">
@@ -114,7 +130,7 @@
   <div class="overlay-score" id="gameOverScore"></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
     <button class="overlay-btn" onclick="start()">▶ PLAY AGAIN</button>
-    <button class="overlay-btn" id="doubleUpBtnGO" onclick="startDoubleUp()">🂠 DOUBLE UP</button>
+    <button class="overlay-btn" id="doubleUpBtnGO" onclick="startDoubleUp()" style="color:#ff4444;">🂠 DOUBLE UP</button>
   </div>
 </div>
 <!-- CLEAR -->
@@ -123,7 +139,7 @@
   <div class="overlay-score" id="clearScore"></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
     <button class="overlay-btn" id="clearRetryBtn" onclick="start()">▶ PLAY AGAIN</button>
-    <button class="overlay-btn" id="doubleUpBtnCL" onclick="startDoubleUp()">🂠 DOUBLE UP</button>
+    <button class="overlay-btn" id="doubleUpBtnCL" onclick="startDoubleUp()" style="color:#ff4444;">🂠 DOUBLE UP</button>
   </div>
 </div>
 <!-- DOUBLE UP MODAL -->
@@ -140,9 +156,9 @@
       <button class="du-btn" id="duLowBtn"  onclick="doubleUpGuess('low')">▼ LOW</button>
     </div>
     <div id="duResultButtons" style="display:none;">
-      <button class="overlay-btn" onclick="startDoubleUp()">🂠 AGAIN</button>
+      <button class="overlay-btn" id="duAgainBtn" onclick="startDoubleUp()">🂠 AGAIN</button>
       <button class="overlay-btn" onclick="closeDoubleUp()">✓ COLLECT</button>
-      <button class="overlay-btn" onclick="start()">▶ NEW GAME</button>
+      <button class="overlay-btn" style="background:linear-gradient(180deg,#c0392b,#922b21);border-color:#e74c3c;" onclick="start()">▶ NEW GAME</button>
     </div>
   </div>
 </div>

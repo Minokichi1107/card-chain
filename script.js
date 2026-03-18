@@ -1,11 +1,12 @@
 // ===== AUDIO =====
 const SOUNDS = {
-  card:     new Audio('sounds/card.mp3'),
-  hand:      new Audio('sounds/hand.mp3'),
-  lose:     new Audio('sounds/lose.mp3'),
-  click:    new Audio('sounds/click.mp3'),
-  error:    new Audio('sounds/error.mp3'),
-  clear:    new Audio('sounds/clear.mp3')
+  card:        new Audio('sounds/card.mp3'),
+  hand:        new Audio('sounds/hand.mp3'),
+  chainbonus:  new Audio('sounds/chainbonus.mp3'),
+  lose:        new Audio('sounds/lose.mp3'),
+  click:       new Audio('sounds/click.mp3'),
+  error:       new Audio('sounds/error.mp3'),
+  clear:       new Audio('sounds/clear.mp3')
 };
 
 // エラーが出ないように「playSound」という名前で関数を作成します
@@ -36,6 +37,51 @@ const TIER_COLORS = [
 function getTier(c) {
   for (let t of TIER_COLORS) if (c>=t.min && c<=t.max) return t;
   return TIER_COLORS[0];
+}
+
+// ===== CREDIT SYSTEM =====
+const CREDIT_KEY = "cardchain_credit";
+let credit = 0;
+let currentBet = 1;
+
+function loadCredit() {
+  try { credit = parseInt(localStorage.getItem(CREDIT_KEY)) || 0; }
+  catch(e) { credit = 0; }
+}
+function saveCredit() {
+  localStorage.setItem(CREDIT_KEY, credit);
+}
+function renderCredit() {
+  let el = document.getElementById("creditVal");
+  if (el) el.textContent = credit;
+  // ベットボタンの有効/無効
+  document.querySelectorAll(".betBtn").forEach(btn => {
+    let b = parseInt(btn.dataset.bet);
+    btn.classList.toggle("active", b === currentBet);
+    btn.disabled = b > credit;
+    btn.classList.toggle("disabled", b > credit);
+  });
+  // NEWGAMEボタンの有効/無効
+  let ng = document.getElementById("newGameBtn");
+  if (ng) {
+    ng.disabled = credit < currentBet;
+    ng.style.opacity = credit < currentBet ? "0.4" : "1";
+  }
+  // INSERT COIN表示
+  let ic = document.getElementById("insertCoin");
+  if (ic) ic.style.display = credit < 1 ? "block" : "none";
+}
+function setBet(n) {
+  if (n > credit) return;
+  currentBet = n;
+  renderCredit();
+}
+function resetCredit() {
+  if (!confirm("クレジットを0にリセットしますか？")) return;
+  credit = 0;
+  currentBet = 1;
+  saveCredit();
+  renderCredit();
 }
 
 // ===== GAME STATE =====
@@ -101,12 +147,10 @@ function isPinch() {
 // 補充後の共通チェック処理
 function afterRefillCheck() {
   isAnimating = false;
+  highlightPayRow(null); // 次のカード補充でポーカー役ハイライトをリセット
   if(hand.length===0 && deck.length===0) { setTimeout(()=>deckClear(),400); return; }
   if(isStuck()) { triggerStuck(); return; }
-  // ピンチ判定：出せるカードが1枚で、その1枚を出した後に手札から繋がるカードがない
-  if(isPinch()) {
-    triggerPinch();
-  }
+  if(isPinch()) triggerPinch();
 }
 
 // ピンチ状態かどうか（毎回カードを出した後に呼ばれる）
@@ -595,8 +639,8 @@ function tryPlay(i) {
   let pokerBonus  = pokerHand ? Math.max(pokerHand.multi, Math.floor(chain * pokerHand.multi / 5)) : 0;
   let total       = chainReward + pokerBonus;
 
-  // 加算＆即時表示反映
-  medals += total;
+  // 加算＆即時表示反映（ベット倍率を乗算）
+  medals += total * currentBet;
   document.getElementById("medal").innerText = medals;
 
   // メッセージ・演出
@@ -617,7 +661,7 @@ function tryPlay(i) {
     pbEl.classList.remove("preview");
     pbEl.classList.add("confirmed");
   } else if (milestone) {
-    playSound("hand");
+    playSound("chainbonus");
     setMsg(`🔥 ${chain} CHAIN BONUS! +${chainReward} メダル！`, "chain-msg");
     highlightChainBonusRow(milestone.label);
   } else {
@@ -670,17 +714,25 @@ function triggerStuck() {
 function gameOver(finalMedals, finalMaxChain) {
   let m = (finalMedals !== undefined) ? finalMedals : medals;
   let mc = (finalMaxChain !== undefined) ? finalMaxChain : maxChain;
+  // 獲得メダルをクレジットに加算
+  credit += m;
+  saveCredit();
+  renderCredit();
   playSound("lose");
   document.getElementById("gameOverScore").innerHTML=
-    `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
+    `MEDALS: ${m}<br>MAX CHAIN: ${mc}<br><span style="color:var(--cyan);font-size:14px;">CREDIT: ${credit}</span>`;
   document.getElementById("gameOverScreen").classList.add("show");
   document.getElementById("doubleUpBtnGO").style.display = m >= 1 ? "" : "none";
   addRankingEntry(m, mc, false);
 }
 function deckClear() {
+  // 獲得メダルをクレジットに加算
+  credit += medals;
+  saveCredit();
+  renderCredit();
   playSound("clear");
   document.getElementById("clearScore").innerHTML=
-    `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}`;
+    `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}<br><span style="color:var(--cyan);font-size:14px;">CREDIT: ${credit}</span>`;
   document.getElementById("clearScreen").classList.add("show");
   document.getElementById("doubleUpBtnCL").style.display = medals >= 1 ? "" : "none";
   addRankingEntry(medals, maxChain, true);
@@ -689,6 +741,7 @@ function deckClear() {
 // ===== DOUBLE UP =====
 let duDeck = [];
 let duStreak = 0;
+let duFromScreen = 'gameOver';
 const DU_MAX_STREAK = 5;
 // 賭け設定（将来ハーフ対応用）
 const DU_BET_MODES = {
@@ -706,7 +759,8 @@ function duMakeFullDeck() {
 }
 
 function duCardValue(c) {
-  // A=1（最弱）、2〜13そのまま、JOKER=0（無効）
+  // A=14（最強）、2〜13そのまま、JOKER=0（無効）
+  if (c.rank === 1) return 14;
   return c.rank;
 }
 
@@ -727,7 +781,8 @@ function startDoubleUp() {
     alert("ダブルアップは最大5回までです！COLLECTしてください。");
     return;
   }
-  // 全オーバーレイを隠す
+  if (document.getElementById("gameOverScreen").classList.contains("show")) duFromScreen = "gameOver";
+  else if (document.getElementById("clearScreen").classList.contains("show")) duFromScreen = "clear";
   ["gameOverScreen","clearScreen"].forEach(id =>
     document.getElementById(id).classList.remove("show")
   );
@@ -834,6 +889,13 @@ function closeDoubleUp() {
   document.getElementById("doubleUpModal").classList.remove("show");
   duStreak = 0;
   duCurrentCard = null;
+  document.getElementById("stuckOverlay").classList.remove("show");
+  document.getElementById("stuckMsg").classList.remove("show");
+  if (duFromScreen === "gameOver") {
+    document.getElementById("gameOverScreen").classList.add("show");
+  } else if (duFromScreen === "clear") {
+    document.getElementById("clearScreen").classList.add("show");
+  }
 }
 
 // ===== RANKING =====
@@ -881,6 +943,15 @@ function renderRanking() {
 
 // ===== START =====
 function start() {
+  // クレジット確認
+  if (credit < currentBet) {
+    setMsg("クレジットが足りません！", "error");
+    return;
+  }
+  // クレジットからベット分引く
+  credit -= currentBet;
+  saveCredit();
+  renderCredit();
 
 // ブラウザの音声再生制限を解除（ゲーム終了系サウンドは除外）
   const unlockExclude = ["lose", "clear"];
@@ -891,7 +962,7 @@ function start() {
      
   deck=[];hand=[];discard=[];
   medals=0;chain=0;maxChain=0;isAnimating=false;
-  duStreak=0; duCurrentCard=null;
+  duStreak=0; duCurrentCard=null; duFromScreen='gameOver';
   let duModal = document.getElementById("doubleUpModal");
   if (duModal) duModal.classList.remove("show");
   document.getElementById("gameOverScreen").classList.remove("show");
@@ -979,4 +1050,7 @@ function dealHand() {
   });
 }
 
+// 初期化
+loadCredit();
+renderCredit();
 start();
