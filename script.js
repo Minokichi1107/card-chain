@@ -1,3 +1,34 @@
+// ===== デバッグ用ログ監視 =====
+let creditLog = 0;
+let betLog    = 0;
+let winLog    = 0;
+
+const _prevState = {
+  creditLog: null,
+  betLog:    null,
+  winLog:    null,
+};
+
+function logState(label) {
+  const current = { creditLog, betLog, winLog };
+  console.group(`📋 [${label}]`);
+  for (const key of Object.keys(current)) {
+    const now  = current[key];
+    const prev = _prevState[key];
+    if (prev === null) {
+      console.log(`  ${key}: ${now}  （初回）`);
+    } else {
+      const diff = now - prev;
+      const arrow = diff > 0 ? "🔺" : diff < 0 ? "🔻" : "➡️";
+      const diffStr = diff > 0 ? `+${diff}` : `${diff}`;
+      console.log(`  ${key}: ${now}  ${arrow} ${diffStr}  （前回: ${prev}）`);
+    }
+    _prevState[key] = now;
+  }
+  console.groupEnd();
+}
+// ===== ここまで =====
+
 // ===== AUDIO =====
 const SOUNDS = {
   card:        new Audio('sounds/card.mp3'),
@@ -153,6 +184,7 @@ function cancelBet() {
 }
 
 // BETに1枚追加（クレジットから即引き落とし）
+let _autoStartTimer = null;
 function addBet() {
   if (gameInProgress || credit <= 0 || currentBet >= 5) return;
   credit -= 1;
@@ -162,8 +194,14 @@ function addBet() {
   renderCredit();
   // 5枚で自動スタート
   if (currentBet >= 5) {
-    setTimeout(() => start(), 300);
+    if (_autoStartTimer) clearTimeout(_autoStartTimer);
+    _autoStartTimer = setTimeout(() => { _autoStartTimer = null; start(); }, 300);
   }
+  // デバック用ログ監視
+  creditLog = credit;
+  betLog    = currentBet;
+  logState("BET追加後");
+
 }
 const INSERT_COIN_MAX = 5; // 1セッションで投入できる上限
 
@@ -768,16 +806,20 @@ function tryPlay(i) {
 
   let milestone = CHAIN_MILESTONES.find(m => m.at === chain) || null;
   let chainReward = milestone ? milestone.reward : 0;
-  // ポーカーボーナス：chain数×multiの5分の1（最低multi枚保証）
-  let pokerBonus  = pokerHand ? Math.max(pokerHand.multi, Math.floor(chain * pokerHand.multi / 5)) : 0;
+  // ポーカーボーナス：パネル表示通り multi × BET
+  let pokerBonus  = pokerHand ? pokerHand.multi : 0;
   let total       = chainReward + pokerBonus;
 
-  // BET倍後の実際の加算値
+  // BET倍後の実際の加算値（チェーンボーナスもBET倍、ポーカーはmulti×BET）
   const totalActual      = total * currentBet;
-  const pokerActual      = pokerBonus * currentBet;
+  const pokerActual      = pokerBonus * currentBet;  // = multi × BET
   const chainActual      = chainReward * currentBet;
 
   medals += totalActual;
+  winLog    = medals;      // ← これ
+  creditLog = credit;      // ← これ
+  betLog    = currentBet;  // ← これ
+  logState("tryPlay メダル加算後");  // ← これ
   document.getElementById("medal").innerText = medals;
 
   // メッセージ・演出（表示もBET倍後の数字を使う）
@@ -855,6 +897,12 @@ function gameOver(finalMedals, finalMaxChain) {
   duAvailable = m >= 1; // メダルがあればダブルアップ可能
   // クレジット加算はここではしない（ダブルアップ後にcloseDoubleUpで加算）
   renderCredit();
+
+  // gameOver内ログ監視
+  winLog = medals;
+  creditLog = credit;
+  logState("ゲームオーバー");
+  //↑デバック終了したら削除
   playSound("lose");
   document.getElementById("gameOverScore").innerHTML=
     `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
@@ -1031,7 +1079,7 @@ function doubleUpGuess(guess) {
         logState(`ダブルアップ 勝ち (streak:${duStreak})`);
       }
     }
-    addRankingEntry(medals, maxChain, false);
+    // ランキング登録はCOLLECT/PLAY AGAIN時のみ（ここでは不要）
   }, 150);
 }
 
@@ -1039,10 +1087,15 @@ function closeDoubleUp() {
   document.getElementById("doubleUpModal").classList.remove("show");
   duStreak = 0;
   duCurrentCard = null;
-  // ダブルアップ終了時点のmedalsでpendingCreditを上書き（勝敗の結果を反映）
+  // COLLECT時にランキング登録（最終medals）
+  addRankingEntry(medals, maxChain, false);
+  // ダブルアップ終了時点のmedalsでpendingCreditを設定
   window._pendingCredit = medals;
+  if (typeof logState === 'function') {
+    winLog = medals; creditLog = credit;
+    logState(`COLLECT時 _pendingCredit=${window._pendingCredit}`);
+  }
   gameInProgress = false;
-  renderCredit();
   returnToBetSelect();
 }
 
@@ -1110,6 +1163,10 @@ function returnToBetSelect() {
   // 保留クレジットをここで加算（ダブルアップなしの場合はgameOver時点のmedals、ダブルアップ後は最終medals）
   if (typeof window._pendingCredit === 'number') {
     credit += window._pendingCredit;
+    if (typeof logState === 'function') {
+      creditLog = credit;
+      logState(`returnToBetSelect credit加算後 +${window._pendingCredit}`);
+    }
     window._pendingCredit = undefined;
     saveCredit();
   }
@@ -1117,12 +1174,23 @@ function returnToBetSelect() {
   duAvailable = false;
   duStreak = 0;
   currentBet = 0;
+  // 自動スタートタイマーをキャンセル（前のゲームのBET5タイマーが残っている場合）
+  if (typeof _autoStartTimer !== 'undefined' && _autoStartTimer) {
+    clearTimeout(_autoStartTimer);
+    _autoStartTimer = null;
+  }
   renderCredit();
   setMsg("BET +1を押してBETしてください", "");
 }
 
 // ===== START =====
 function start() {
+  // デバック用ログ監視
+  creditLog = credit;
+  betLog    = currentBet;
+  winLog    = 0;
+  logState("ゲームスタート");
+  // ...デバック終了時削除
   // BET未投入チェック
   if (currentBet < 1) {
     setMsg("BET +1を押してBETしてください", "error");
