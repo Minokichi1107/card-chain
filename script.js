@@ -1,58 +1,3 @@
-// ============================================================
-// デバッグ用ログ監視システム
-// 使い方：logState("ラベル") を呼び出すだけ！
-// ============================================================
-
-// 監視したい変数（ゲームの状態）
-let creditLog = 0;  // クレジット（所持メダル）
-let betLog    = 0;  // 現在のBET数
-let winLog    = 0;  // 今回のゲームで獲得したメダル数
-
-// 前回の値を記憶しておくオブジェクト（差分計算に使う）
-const _prevState = {
-  creditLog: null,
-  betLog:    null,
-  winLog:    null,
-};
-
-/**
- * logState(label)
- * 現在の変数の値と、前回からの差分をコンソールに出力する関数
- * @param {string} label - どの処理タイミングで呼んだか分かるラベル
- */
-function logState(label) {
-  // 現在の状態をまとめる
-  const current = {
-    creditLog,
-    betLog,
-    winLog,
-  };
-
-  // ---- コンソールにグループ表示（折りたたみ可能） ----
-  console.group(`📋 [${label}]`);
-
-  // 各変数を1行ずつ表示
-  for (const key of Object.keys(current)) {
-    const now  = current[key];
-    const prev = _prevState[key];
-
-    if (prev === null) {
-      // 初回呼び出し：前回値なし
-      console.log(`  ${key}: ${now}  （初回）`);
-    } else {
-      const diff = now - prev;
-      const arrow = diff > 0 ? "🔺" : diff < 0 ? "🔻" : "➡️";
-      const diffStr = diff > 0 ? `+${diff}` : `${diff}`;
-      console.log(`  ${key}: ${now}  ${arrow} ${diffStr}  （前回: ${prev}）`);
-    }
-
-    // 今回の値を「前回値」として保存
-    _prevState[key] = now;
-  }
-
-  console.groupEnd();
-}
-
 // ===== AUDIO =====
 const SOUNDS = {
   card:        new Audio('sounds/card.mp3'),
@@ -209,10 +154,6 @@ function cancelBet() {
 
 // BETに1枚追加（クレジットから即引き落とし）
 function addBet() {
-  betLog = currentBet;       // 監視変数に反映
-  creditLog = credit;
-  logState("BET追加後");     // ← ここで呼ぶ
-  // ... 既存の処理
   if (gameInProgress || credit <= 0 || currentBet >= 5) return;
   credit -= 1;
   currentBet += 1;
@@ -227,9 +168,6 @@ function addBet() {
 const INSERT_COIN_MAX = 5; // 1セッションで投入できる上限
 
 function insertCoin() {
-  creditLog = credit;
-  logState("コイン投入後");
-  // ... 既存の処理
   if (gameInProgress) return;
   if (credit >= 5) {
     setMsg("クレジットが上限（5枚）です", "error");
@@ -841,13 +779,6 @@ function tryPlay(i) {
 
   medals += totalActual;
   document.getElementById("medal").innerText = medals;
-  
-  // ↓↓デバック用ログ監視
-  winLog    = medals;
-  creditLog = credit;
-  betLog    = currentBet;
-  logState("tryPlay メダル加算後");
-  // ↑↑デバック用ログ監視
 
   // メッセージ・演出（表示もBET倍後の数字を使う）
   if (pokerHand && milestone) {
@@ -917,36 +848,33 @@ function triggerStuck() {
 
 // ===== END =====
 function gameOver(finalMedals, finalMaxChain) {
-  winLog    = finalMedals ?? medals;
-  creditLog = credit;
-  logState("ゲームオーバー");
-  // ... 既存の処理
   let m = (finalMedals !== undefined) ? finalMedals : medals;
   let mc = (finalMaxChain !== undefined) ? finalMaxChain : maxChain;
+  medals = m; // medalsをゲームオーバー時点の値に確定
   gameInProgress = false;
-  duAvailable = true;
-  credit += m;
-  saveCredit();
-  renderCredit(); // BETボタンを解放
+  duAvailable = m >= 1; // メダルがあればダブルアップ可能
+  // クレジット加算はここではしない（ダブルアップ後にcloseDoubleUpで加算）
+  renderCredit();
   playSound("lose");
   document.getElementById("gameOverScore").innerHTML=
-    `MEDALS: ${m}<br>MAX CHAIN: ${mc}<br><span style="color:var(--cyan);font-size:14px;">CREDIT: ${credit}</span>`;
+    `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
   document.getElementById("gameOverScreen").classList.add("show");
   document.getElementById("doubleUpBtnGO").style.display = m >= 1 ? "" : "none";
   addRankingEntry(m, mc, false);
+  // ダブルアップしない場合のためPLAY AGAINボタンでcredit加算
+  window._pendingCredit = m;
 }
 function deckClear() {
   gameInProgress = false;
-  duAvailable = true;
-  credit += medals;
-  saveCredit();
-  renderCredit(); // BETボタンを解放
+  duAvailable = medals >= 1;
+  renderCredit();
   playSound("clear");
   document.getElementById("clearScore").innerHTML=
-    `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}<br><span style="color:var(--cyan);font-size:14px;">CREDIT: ${credit}</span>`;
+    `MEDALS: ${medals}<br>MAX CHAIN: ${maxChain}`;
   document.getElementById("clearScreen").classList.add("show");
   document.getElementById("doubleUpBtnCL").style.display = medals >= 1 ? "" : "none";
   addRankingEntry(medals, maxChain, true);
+  window._pendingCredit = medals;
 }
 
 // ===== DOUBLE UP =====
@@ -1079,9 +1007,13 @@ function doubleUpGuess(guess) {
         : `<span style="color:#ff6b6b">ハズレ！ -${bet} medals</span>`;
       duStreak = 0;
       document.getElementById("duResultButtons").style.display = "";
-      // メダル0になったらAGAINを隠す
       if (medals < 1) {
         document.getElementById("duResultButtons").querySelectorAll("button")[0].style.display = "none";
+      }
+      // デバッグログ
+      if (typeof logState === 'function') {
+        winLog = medals; creditLog = credit; betLog = currentBet;
+        logState(`ダブルアップ 負け (streak:${duStreak})`);
       }
     } else {
       // 勝ち
@@ -1093,6 +1025,11 @@ function doubleUpGuess(guess) {
       duCurrentCard = next;
       document.getElementById("duResultButtons").style.display = "";
       updateDuUI();
+      // デバッグログ
+      if (typeof logState === 'function') {
+        winLog = medals; creditLog = credit; betLog = currentBet;
+        logState(`ダブルアップ 勝ち (streak:${duStreak})`);
+      }
     }
     addRankingEntry(medals, maxChain, false);
   }, 150);
@@ -1102,11 +1039,11 @@ function closeDoubleUp() {
   document.getElementById("doubleUpModal").classList.remove("show");
   duStreak = 0;
   duCurrentCard = null;
-  // ゲームオーバー/クリア画面は再表示しない（ダブルアップ終了 = 結果確定）
-  // BET選択待ち状態に戻す
+  // ダブルアップ終了時点のmedalsでpendingCreditを上書き（勝敗の結果を反映）
+  window._pendingCredit = medals;
   gameInProgress = false;
   renderCredit();
-  setMsg("BETを選んでNEW GAMEを押してください", "");
+  returnToBetSelect();
 }
 
 // ===== RANKING =====
@@ -1170,6 +1107,12 @@ function returnToBetSelect() {
   document.getElementById("pokerBanner").textContent = "";
   document.getElementById("gameArea").classList.remove("chain-tier1","chain-tier2","chain-tier3","chain-tier4","chain-tier5");
   renderBoard();
+  // 保留クレジットをここで加算（ダブルアップなしの場合はgameOver時点のmedals、ダブルアップ後は最終medals）
+  if (typeof window._pendingCredit === 'number') {
+    credit += window._pendingCredit;
+    window._pendingCredit = undefined;
+    saveCredit();
+  }
   gameInProgress = false;
   duAvailable = false;
   duStreak = 0;
@@ -1180,11 +1123,6 @@ function returnToBetSelect() {
 
 // ===== START =====
 function start() {
-  betLog    = currentBet;
-  creditLog = credit;
-  winLog    = 0;             // ゲーム開始でリセット
-  logState("ゲームスタート");
-  // ... 既存の処理
   // BET未投入チェック
   if (currentBet < 1) {
     setMsg("BET +1を押してBETしてください", "error");
