@@ -27,7 +27,7 @@ function logState(label) {
   }
   console.groupEnd();
 }
-// ===== ここまで =====
+// ===== ログ監視ここまで =====
 
 // ===== AUDIO =====
 const SOUNDS = {
@@ -197,11 +197,9 @@ function addBet() {
     if (_autoStartTimer) clearTimeout(_autoStartTimer);
     _autoStartTimer = setTimeout(() => { _autoStartTimer = null; start(); }, 300);
   }
-  // デバック用ログ監視
-  creditLog = credit;
-  betLog    = currentBet;
+  // ログ監視
+  creditLog = credit; betLog = currentBet;
   logState("BET追加後");
-
 }
 const INSERT_COIN_MAX = 5; // 1セッションで投入できる上限
 
@@ -816,11 +814,10 @@ function tryPlay(i) {
   const chainActual      = chainReward * currentBet;
 
   medals += totalActual;
-  winLog    = medals;      // ← これ
-  creditLog = credit;      // ← これ
-  betLog    = currentBet;  // ← これ
-  logState("tryPlay メダル加算後");  // ← これ
   document.getElementById("medal").innerText = medals;
+  // ログ監視
+  winLog = medals; creditLog = credit; betLog = currentBet;
+  logState("tryPlay メダル加算後");
 
   // メッセージ・演出（表示もBET倍後の数字を使う）
   if (pokerHand && milestone) {
@@ -893,16 +890,13 @@ function gameOver(finalMedals, finalMaxChain) {
   let m = (finalMedals !== undefined) ? finalMedals : medals;
   let mc = (finalMaxChain !== undefined) ? finalMaxChain : maxChain;
   medals = m; // medalsをゲームオーバー時点の値に確定
+  // ログ監視
+  winLog = m; creditLog = credit;
+  logState("ゲームオーバー");
   gameInProgress = false;
   duAvailable = m >= 1; // メダルがあればダブルアップ可能
   // クレジット加算はここではしない（ダブルアップ後にcloseDoubleUpで加算）
   renderCredit();
-
-  // gameOver内ログ監視
-  winLog = medals;
-  creditLog = credit;
-  logState("ゲームオーバー");
-  //↑デバック終了したら削除
   playSound("lose");
   document.getElementById("gameOverScore").innerHTML=
     `MEDALS: ${m}<br>MAX CHAIN: ${mc}`;
@@ -1185,12 +1179,9 @@ function returnToBetSelect() {
 
 // ===== START =====
 function start() {
-  // デバック用ログ監視
-  creditLog = credit;
-  betLog    = currentBet;
-  winLog    = 0;
+  // ログ監視
+  creditLog = credit; betLog = currentBet; winLog = 0;
   logState("ゲームスタート");
-  // ...デバック終了時削除
   // BET未投入チェック
   if (currentBet < 1) {
     setMsg("BET +1を押してBETしてください", "error");

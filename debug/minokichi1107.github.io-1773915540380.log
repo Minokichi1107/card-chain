@@ -1,0 +1,89 @@
+script.js:32 📋 [BET追加後]
+script.js:41   creditLog: 3630  （初回）
+script.js:41   betLog: 0  （初回）
+script.js:41   winLog: 0  （初回）
+favicon.ico:1  GET https://minokichi1107.github.io/favicon.ico 404 (Not Found)
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 3629  🔻 -1  （前回: 3630）
+script.js:46   betLog: 1  🔺 +1  （前回: 0）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 3628  🔻 -1  （前回: 3629）
+script.js:46   betLog: 2  🔺 +1  （前回: 1）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 3627  🔻 -1  （前回: 3628）
+script.js:46   betLog: 3  🔺 +1  （前回: 2）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 3626  🔻 -1  （前回: 3627）
+script.js:46   betLog: 4  🔺 +1  （前回: 3）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [ゲームスタート]
+script.js:46   creditLog: 3625  🔻 -1  （前回: 3626）
+script.js:46   betLog: 5  🔺 +1  （前回: 4）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  🔺 +50  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 100  🔺 +50  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 100  ➡️ 0  （前回: 100）
+script.js:32 📋 [ゲームオーバー]
+script.js:46   creditLog: 3625  ➡️ 0  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 100  ➡️ 0  （前回: 100）
+script.js:32 📋 [ゲームスタート]
+script.js:46   creditLog: 3725  🔺 +100  （前回: 3625）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  🔻 -100  （前回: 100）

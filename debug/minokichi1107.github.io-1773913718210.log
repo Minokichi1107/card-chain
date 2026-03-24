@@ -1,0 +1,201 @@
+script.js:32 📋 [BET追加後]
+script.js:41   creditLog: 655  （初回）
+script.js:41   betLog: 0  （初回）
+script.js:41   winLog: 0  （初回）
+favicon.ico:1  GET https://minokichi1107.github.io/favicon.ico 404 (Not Found)
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 655  ➡️ 0  （前回: 655）
+script.js:46   betLog: 0  ➡️ 0  （前回: 0）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 654  🔻 -1  （前回: 655）
+script.js:46   betLog: 1  🔺 +1  （前回: 0）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 653  🔻 -1  （前回: 654）
+script.js:46   betLog: 2  🔺 +1  （前回: 1）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 652  🔻 -1  （前回: 653）
+script.js:46   betLog: 3  🔺 +1  （前回: 2）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 651  🔻 -1  （前回: 652）
+script.js:46   betLog: 4  🔺 +1  （前回: 3）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [ゲームスタート]
+script.js:46   creditLog: 650  🔻 -1  （前回: 651）
+script.js:46   betLog: 5  🔺 +1  （前回: 4）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [ゲームオーバー]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 650  ➡️ 0  （前回: 650）
+script.js:46   betLog: 0  🔻 -5  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 649  🔻 -1  （前回: 650）
+script.js:46   betLog: 1  🔺 +1  （前回: 0）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 648  🔻 -1  （前回: 649）
+script.js:46   betLog: 2  🔺 +1  （前回: 1）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 647  🔻 -1  （前回: 648）
+script.js:46   betLog: 3  🔺 +1  （前回: 2）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [BET追加後]
+script.js:46   creditLog: 646  🔻 -1  （前回: 647）
+script.js:46   betLog: 4  🔺 +1  （前回: 3）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+content.js:1 Uncaught (in promise) The message port closed before a response was received.
+(anonymous) @ content.js:1
+content.js:1 Uncaught (in promise) The message port closed before a response was received.
+(anonymous) @ content.js:1
+content.js:1 Uncaught (in promise) The message port closed before a response was received.
+(anonymous) @ content.js:1
+script.js:32 📋 [ゲームスタート]
+script.js:46   creditLog: 645  🔻 -1  （前回: 646）
+script.js:46   betLog: 5  🔺 +1  （前回: 4）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+content.js:1 Uncaught (in promise) The message port closed before a response was received.
+(anonymous) @ content.js:1
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 0  ➡️ 0  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  🔺 +50  （前回: 0）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 50  ➡️ 0  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 800  🔺 +750  （前回: 50）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 800  ➡️ 0  （前回: 800）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 800  ➡️ 0  （前回: 800）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 850  🔺 +50  （前回: 800）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 850  ➡️ 0  （前回: 850）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 850  ➡️ 0  （前回: 850）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 900  🔺 +50  （前回: 850）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 900  ➡️ 0  （前回: 900）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 900  ➡️ 0  （前回: 900）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 950  🔺 +50  （前回: 900）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 950  ➡️ 0  （前回: 950）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 950  ➡️ 0  （前回: 950）
+script.js:32 📋 [tryPlay メダル加算後]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 1000  🔺 +50  （前回: 950）
+script.js:32 📋 [ゲームオーバー]
+script.js:46   creditLog: 645  ➡️ 0  （前回: 645）
+script.js:46   betLog: 5  ➡️ 0  （前回: 5）
+script.js:46   winLog: 1000  ➡️ 0  （前回: 1000）
