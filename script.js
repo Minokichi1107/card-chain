@@ -315,9 +315,36 @@ function isPinch() {
 // 補充後の共通チェック処理
 function afterRefillCheck() {
   isAnimating = false;
-  highlightPayRow(null); // 次のカード補充でポーカー役ハイライトをリセット
+
+  // 補充後の5枚でポーカー役判定・即時加算（ゲームオーバーより先に処理）
+  let pokerHand = detectPokerHand(hand);
+  if (pokerHand) {
+    let pokerActual = pokerHand.multi * currentBet;
+    medals += pokerActual;
+    document.getElementById("medal").innerText = medals;
+    playSound("hand");
+    setMsg(`🎰 ${pokerHand.name}! +${pokerActual} メダル！`, "chain-msg");
+    highlightPayRow(pokerHand.id);
+    let pbEl = document.getElementById("pokerBanner");
+    if (pbEl) { pbEl.classList.remove("preview"); pbEl.classList.add("confirmed"); }
+    let medalEl = document.getElementById("medal");
+    medalEl.classList.remove("medal-anim");
+    void medalEl.offsetWidth;
+    medalEl.classList.add("medal-anim");
+    setTimeout(() => medalEl.classList.remove("medal-anim"), 400);
+    // ログ監視
+    winLog = medals; creditLog = credit;
+    logState("afterRefill ポーカー加算後");
+  } else {
+    highlightPayRow(null);
+  }
+
+  // ポーカー加算後にゲーム終了チェック（メダルが正しく反映された状態で判定）
   if(hand.length===0 && deck.length===0) { setTimeout(()=>deckClear(),400); return; }
-  if(isStuck()) { triggerStuck(); return; }
+  if(isStuck()) {
+    // 手詰まり時もポーカーボーナスは加算済みなのでそのままtriggerStuck
+    triggerStuck(); return;
+  }
   if(isPinch()) triggerPinch();
 }
 
@@ -794,48 +821,23 @@ function tryPlay(i) {
 
   isAnimating=true;
 
-  // ★出す前の5枚で役判定
-  let pokerHand = detectPokerHand(hand);
-
   discard.push(field);
   field=hand.splice(i,1)[0];
   chain++;
   if(chain>maxChain) maxChain=chain;
 
+  // チェーンボーナス（マイルストーン）は即時加算
   let milestone = CHAIN_MILESTONES.find(m => m.at === chain) || null;
   let chainReward = milestone ? milestone.reward : 0;
-  // ポーカーボーナス：パネル表示通り multi × BET
-  let pokerBonus  = pokerHand ? pokerHand.multi : 0;
-  let total       = chainReward + pokerBonus;
+  const chainActual = chainReward * currentBet;
 
-  // BET倍後の実際の加算値（チェーンボーナスもBET倍、ポーカーはmulti×BET）
-  const totalActual      = total * currentBet;
-  const pokerActual      = pokerBonus * currentBet;  // = multi × BET
-  const chainActual      = chainReward * currentBet;
+  if (chainActual > 0) {
+    medals += chainActual;
+    document.getElementById("medal").innerText = medals;
+  }
 
-  medals += totalActual;
-  document.getElementById("medal").innerText = medals;
-  // ログ監視
-  winLog = medals; creditLog = credit; betLog = currentBet;
-  logState("tryPlay メダル加算後");
-
-  // メッセージ・演出（表示もBET倍後の数字を使う）
-  if (pokerHand && milestone) {
-    playSound("hand");
-    setMsg(`🎰 ${pokerHand.name} + CHAIN BONUS! +${totalActual} メダル！`, "chain-msg");
-    highlightPayRow(pokerHand.id);
-    highlightChainBonusRow(milestone.label);
-    let pbEl = document.getElementById("pokerBanner");
-    pbEl.classList.remove("preview");
-    pbEl.classList.add("confirmed");
-  } else if (pokerHand) {
-    playSound("hand");
-    setMsg(`🎰 ${pokerHand.name}! +${pokerActual} メダル！`, "chain-msg");
-    highlightPayRow(pokerHand.id);
-    let pbEl = document.getElementById("pokerBanner");
-    pbEl.classList.remove("preview");
-    pbEl.classList.add("confirmed");
-  } else if (milestone) {
+  // チェーンメッセージ
+  if (milestone) {
     playSound("chainbonus");
     setMsg(`🔥 ${chain} CHAIN BONUS! +${chainActual} メダル！`, "chain-msg");
     highlightChainBonusRow(milestone.label);
@@ -853,6 +855,12 @@ function tryPlay(i) {
   setTimeout(() => medalEl.classList.remove("medal-anim"), 400);
 
   showChainBanner(chain, !!milestone);
+
+  // ログ監視（チェーン分）
+  winLog = medals; creditLog = credit; betLog = currentBet;
+  logState("tryPlay チェーン加算後");
+
+  // 補充後にポーカー役を判定・加算
   refillAndCheck();
 }
 
@@ -1081,8 +1089,6 @@ function closeDoubleUp() {
   document.getElementById("doubleUpModal").classList.remove("show");
   duStreak = 0;
   duCurrentCard = null;
-  // COLLECT時にランキング登録（最終medals）
-  addRankingEntry(medals, maxChain, false);
   // ダブルアップ終了時点のmedalsでpendingCreditを設定
   window._pendingCredit = medals;
   if (typeof logState === 'function') {
