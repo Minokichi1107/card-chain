@@ -1,23 +1,19 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Card Chain</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=VT323&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Orbitron:wght@400;700;900&family=VT323&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ゲームの見た目を定義するCSS -->
-    <link rel="stylesheet" href="style.css">
-
 <div id="cabinet">
-
-  <!-- TITLE -->
   <div id="titleBar">
-    <h1>★ CARD CHAIN ★</h1>
+    <h1>CARD CHAIN</h1>
     <div class="credits">MEDALS: <span id="medal">0</span></div>
   </div>
-  <!-- CREDIT BAR -->
+
   <div id="creditBar">
     <div id="creditLeft">
       <span id="creditLabel">CREDIT</span>
@@ -34,43 +30,37 @@
     <button id="creditResetBtn" onclick="resetCredit()">RESET</button>
   </div>
 
-  <!-- MAIN LAYOUT -->
   <div id="mainLayout">
+    <div id="payoutPanel">
+      <div id="payoutTitle" style="margin-bottom:10px;">◆ BONUS PAYS ◆</div>
+      <div class="payRow" id="pay-royal"><span class="hand-name">ROYAL FLUSH</span><span class="multiplier">×1000</span></div>
+      <div class="payRow" id="pay-straight-flush"><span class="hand-name">STR FLUSH</span><span class="multiplier">×500</span></div>
+      <div class="payRow" id="pay-four"><span class="hand-name">FOUR KIND</span><span class="multiplier">×250</span></div>
+      <div class="payRow" id="pay-full"><span class="hand-name">FULL HOUSE</span><span class="multiplier">×100</span></div>
+      <div class="payRow" id="pay-flush"><span class="hand-name">FLUSH</span><span class="multiplier">×75</span></div>
+      <div class="payRow" id="pay-straight"><span class="hand-name">STRAIGHT</span><span class="multiplier">×50</span></div>
 
-    <!-- LEFT: PAYOUT TABLE -->
-<div id="payoutPanel">
-  <div id="payoutTitle" style="margin-bottom:10px;">◆ BONUS PAYS ◆</div>
-  <div class="payRow" id="pay-royal">    <span class="hand-name">ROYAL FLUSH</span>  <span class="multiplier">×200</span></div>
-  <div class="payRow" id="pay-straight-flush"><span class="hand-name">STR FLUSH</span><span class="multiplier">×100</span></div>
-  <div class="payRow" id="pay-four">     <span class="hand-name">FOUR KIND</span>    <span class="multiplier">×50</span></div>
-  <div class="payRow" id="pay-full">     <span class="hand-name">FULL HOUSE</span>   <span class="multiplier">×20</span></div>
-  <div class="payRow" id="pay-flush">    <span class="hand-name">FLUSH</span>        <span class="multiplier">×15</span></div>
-  <div class="payRow" id="pay-straight"> <span class="hand-name">STRAIGHT</span>     <span class="multiplier">×10</span></div>
+      <div style="margin-top:30px; border-top:2px solid var(--border); padding-top:6px;">
+        <div id="payoutTitle" style="color:var(--gold);">◆ CHAIN BONUS ◆</div>
+        <div class="payRow chainBonusRow" data-label="10-13"><span>10-13</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="14-16"><span>14-16</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="17-19"><span>17-19</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="20-22"><span>20-22</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+10</span></div>
+        <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+20</span></div>
+        <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+20</span></div>
+        <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+20</span></div>
+        <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+30</span></div>
+        <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+30</span></div>
+        <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+30</span></div>
+        <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+50</span></div>
+        <div class="payRow chainBonusRow" data-label="CLEAR"><span>◆ CLEAR</span><span style="color:var(--gold);">+200</span></div>
+      </div>
+    </div>
 
-  <div style="margin-top: 30px; border-top: 2px solid var(--border); padding-top: 6px;">
-  <div id="payoutTitle" style="color:var(--gold);">◆ CHAIN BONUS ◆</div>
-  <div class="payRow chainBonusRow" data-label="10-13"><span>10-13</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="14-16"><span>14-16</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="17-19"><span>17-19</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="20-22"><span>20-22</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="23-25"><span>23-25</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="26-28"><span>26-28</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="29-31"><span>29-31</span><span style="color:var(--gold);">+10</span></div>
-  <div class="payRow chainBonusRow" data-label="32-34"><span>32-34</span><span style="color:var(--gold);">+20</span></div>
-  <div class="payRow chainBonusRow" data-label="35-37"><span>35-37</span><span style="color:var(--gold);">+20</span></div>
-  <div class="payRow chainBonusRow" data-label="38-40"><span>38-40</span><span style="color:var(--gold);">+20</span></div>
-  <div class="payRow chainBonusRow" data-label="41-43"><span>41-43</span><span style="color:var(--gold);">+30</span></div>
-  <div class="payRow chainBonusRow" data-label="44-46"><span>44-46</span><span style="color:var(--gold);">+30</span></div>
-  <div class="payRow chainBonusRow" data-label="47-49"><span>47-49</span><span style="color:var(--gold);">+30</span></div>
-  <div class="payRow chainBonusRow" data-label="50-52"><span>50-52</span><span style="color:var(--gold);">+50</span></div>
-  <div class="payRow chainBonusRow" data-label="CLEAR"><span>🏆 CLEAR</span><span style="color:var(--gold);">+200</span></div>
-  </div>
-</div>
-    
-    <!-- RIGHT: GAME AREA -->
     <div id="gameArea">
-
-      <!-- TRACKER + INFO BAR -->
       <div id="trackerPanel">
         <div id="trackerLeft">
           <div id="trackerTitle">◆ CARD TRACKER ◆</div>
@@ -88,31 +78,27 @@
         </div>
       </div>
 
-      <!-- FIELD -->
       <div id="fieldZone">
         <div id="fieldCards"></div>
         <div id="chainBanner"><div id="chainText"></div></div>
       </div>
 
-      <!-- HAND -->
       <div id="handZone">
         <div id="handTitle">◆ SELECT A CARD ◆</div>
         <div id="pokerBanner"></div>
         <div id="hand"></div>
       </div>
 
-      <!-- BOTTOM BAR -->
       <div id="bottomBar">
-        <div id="msgBar">手札をクリックして出す</div>
+        <div id="msgBar">カードをクリックして出してください</div>
         <div id="bottomBtns">
           <button id="newGameBtn" onclick="start()">↺ NEW GAME</button>
-          <button id="startGameBtn" onclick="start()" style="display:none;">▶ START  BET×<span id="betDisplay">1</span></button>
-          <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">？</button>
+          <button id="startGameBtn" onclick="start()" style="display:none;">▶ START BET ×<span id="betDisplay">1</span></button>
+          <button id="helpBtn" onclick="document.getElementById('helpModal').classList.add('show')">?</button>
           <button id="rankingBtn" onclick="renderRanking();document.getElementById('rankingModal').classList.add('show')">🏆</button>
           <div id="volumeControl">
-            <label>🔊</label>
-            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4"
-              oninput="setVolume(parseFloat(this.value))">
+            <label>VOL</label>
+            <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="0.4" oninput="setVolume(parseFloat(this.value))">
           </div>
         </div>
       </div>
@@ -121,75 +107,69 @@
   </div>
 </div>
 
-<!-- STUCK -->
 <div id="stuckOverlay"></div>
 <div id="stuckMsg"></div>
 
-<!-- GAME OVER -->
 <div class="overlay" id="gameOverScreen">
   <div id="gameOverTitle">GAME OVER</div>
   <div class="overlay-score" id="gameOverScore"></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
     <button class="overlay-btn" onclick="returnToBetSelect()">▶ PLAY AGAIN</button>
-    <button class="overlay-btn" id="doubleUpBtnGO" onclick="startDoubleUp()" style="color:#ff4444;">🂠 DOUBLE UP</button>
+    <button class="overlay-btn" id="doubleUpBtnGO" onclick="startDoubleUp()" style="color:#ff4444;">♠ DOUBLE UP</button>
   </div>
 </div>
-<!-- CLEAR -->
+
 <div class="overlay" id="clearScreen">
-  <div id="clearTitle">★ DECK CLEAR ★</div>
+  <div id="clearTitle">◆ DECK CLEAR ◆</div>
   <div class="overlay-score" id="clearScore"></div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
     <button class="overlay-btn" id="clearRetryBtn" onclick="returnToBetSelect()">▶ PLAY AGAIN</button>
-    <button class="overlay-btn" id="doubleUpBtnCL" onclick="startDoubleUp()" style="color:#ff4444;">🂠 DOUBLE UP</button>
+    <button class="overlay-btn" id="doubleUpBtnCL" onclick="startDoubleUp()" style="color:#ff4444;">♠ DOUBLE UP</button>
   </div>
 </div>
-<!-- DOUBLE UP MODAL -->
+
 <div id="doubleUpModal" class="overlay">
   <div id="doubleUpBox">
-    <div id="duTitle">🂠 DOUBLE UP</div>
+    <div id="duTitle">♠ DOUBLE UP</div>
     <div id="duMedals"></div>
-    <div id="duCardArea">
-      <div id="duCard"></div>
-    </div>
+    <div id="duCardArea"><div id="duCard"></div></div>
     <div id="duMessage"></div>
     <div id="duButtons">
       <button class="du-btn" id="duHighBtn" onclick="doubleUpGuess('high')">▲ HIGH</button>
-      <button class="du-btn" id="duLowBtn"  onclick="doubleUpGuess('low')">▼ LOW</button>
+      <button class="du-btn" id="duLowBtn" onclick="doubleUpGuess('low')">▼ LOW</button>
     </div>
     <div id="duResultButtons" style="display:none;">
-      <button class="overlay-btn" id="duAgainBtn" onclick="startDoubleUp()">🂠 AGAIN</button>
-      <button class="overlay-btn" onclick="closeDoubleUp()">✓ COLLECT</button>
+      <button class="overlay-btn" id="duAgainBtn" onclick="startDoubleUp()">♠ AGAIN</button>
+      <button class="overlay-btn" onclick="closeDoubleUp()">◆ COLLECT</button>
       <button class="overlay-btn" style="background:linear-gradient(180deg,#c0392b,#922b21);border-color:#e74c3c;" onclick="returnToBetSelect()">▶ NEW GAME</button>
     </div>
   </div>
 </div>
 
-<!-- HELP MODAL -->
 <div id="helpModal">
   <div id="helpBox">
     <h2>◆ RULE ◆</h2>
     <ul>
-      <li><strong>同じスート or 同じ数字</strong>のカードを出してチェーンをつなげ！</li>
-      <li>チェーンが続くほど <strong>Chain Bonus</strong> が増える</li>
-      <li>手札にポーカー役が揃ったら次のカードを出すと <strong>ボーナス獲得</strong></li>
-      <li>出せるカードがなくなると <strong>GAME OVER</strong></li>
+      <li><strong>同じスート</strong> または <strong>前後の数字</strong> のカードを出してチェーンをつなげます。</li>
+      <li>チェーンが長くなるほど <strong>Chain Bonus</strong> が増えます。</li>
+      <li>場に出せるカードがなくなったら次のカードを引きます。</li>
+      <li>手札も山札も使い切ると <strong>DECK CLEAR</strong>、出せなくなると <strong>GAME OVER</strong> です。</li>
     </ul>
     <button id="helpClose" onclick="document.getElementById('helpModal').classList.remove('show')">CLOSE</button>
   </div>
 </div>
-<!-- RANKING MODAL -->
+
 <div id="rankingModal" class="overlay">
   <div id="rankingBox">
     <h2>🏆 RANKING 🏆</h2>
     <div id="rankingList"></div>
     <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;">
       <button class="overlay-btn" onclick="document.getElementById('rankingModal').classList.remove('show')">CLOSE</button>
-      <button class="overlay-btn" id="clearRankBtn" style="background:linear-gradient(180deg,#444,#222);box-shadow:none;"
-        onclick="if(confirm('ランキングをリセットしますか？')){localStorage.removeItem('cardchain_ranking');renderRanking();}">RESET</button>
+      <button class="overlay-btn" id="clearRankBtn" style="background:linear-gradient(180deg,#444,#222);box-shadow:none;" onclick="if(confirm('ランキングをリセットしますか？')){localStorage.removeItem('cardchain_ranking');renderRanking();}">RESET</button>
     </div>
   </div>
 </div>
-    <!-- ゲームロジック -->
-    <script src="script.js"></script>
+
+<script src="script.js"></script>
 </body>
 </html>

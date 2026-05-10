@@ -951,3 +951,443 @@ width: 200px;
 #creditResetBtn:hover {
   color: #ff6b6b; border-color: #ff6b6b;
 }
+
+/* ===== Visual Refresh (CardChainUI_design) ===== */
+:root {
+  --cc-wood-dark: #2d140b;
+  --cc-wood-mid: #4a2414;
+  --cc-brass-1: #c8a165;
+  --cc-brass-2: #8d6738;
+  --cc-felt-top: #0e6a47;
+  --cc-felt-bottom: #0b4d34;
+  --cc-parchment: #b69462;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% -10%, rgba(90, 52, 24, 0.5), transparent 42%),
+    linear-gradient(145deg, #1f0f09 0%, #100705 45%, #050202 100%);
+  color: #f4e2bf;
+}
+
+#cabinet {
+  max-width: 980px;
+  background:
+    linear-gradient(135deg, rgba(255, 220, 150, 0.07), transparent 35%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.015) 0,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    linear-gradient(175deg, #482414, #2a130b 58%, #1a0b07);
+  border-left: 10px solid #6d4a2d;
+  border-right: 10px solid #6d4a2d;
+  box-shadow:
+    0 0 0 3px #2f1a0f inset,
+    0 0 0 6px #9c7548 inset,
+    0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+#titleBar {
+  background: linear-gradient(180deg, #624021, #3f2614);
+  border-bottom: 2px solid #7f5b31;
+}
+
+#titleBar h1 {
+  color: #e6c189;
+  text-shadow: 0 0 8px rgba(255, 205, 123, 0.35);
+  animation: none;
+}
+
+#titleBar .credits {
+  color: #7dd3c5;
+}
+
+#titleBar .credits span {
+  color: #efc986;
+  text-shadow: 0 0 6px rgba(255, 195, 107, 0.3);
+}
+
+#creditBar,
+#trackerPanel,
+#bottomBar {
+  background:
+    linear-gradient(180deg, rgba(30, 15, 10, 0.82), rgba(19, 9, 7, 0.85)),
+    linear-gradient(90deg, rgba(200, 161, 101, 0.18), transparent 28%, transparent 72%, rgba(200, 161, 101, 0.15));
+  border-color: #7e5f3a;
+}
+
+#payoutPanel {
+  background:
+    linear-gradient(180deg, rgba(40, 21, 13, 0.92), rgba(31, 15, 10, 0.94)),
+    linear-gradient(130deg, rgba(219, 175, 108, 0.12), transparent 58%);
+  border-right: 2px solid #7d5b34;
+}
+
+#payoutTitle {
+  color: #ebcf9f;
+  border-bottom-color: rgba(223, 179, 113, 0.35);
+}
+
+.payRow {
+  color: #f0ddbb;
+  border-bottom-color: rgba(233, 198, 142, 0.15);
+}
+
+.hand-name,
+.payRow .multiplier {
+  color: #f4d09d;
+}
+
+#gameArea {
+  background: #1b100a;
+}
+
+#fieldZone {
+  background:
+    radial-gradient(ellipse at center, rgba(16, 118, 75, 0.62) 0%, rgba(9, 72, 47, 0.95) 68%),
+    repeating-radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0, rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 4px);
+  border-top: 1px solid rgba(199, 160, 102, 0.35);
+  border-bottom: 2px solid #876237;
+}
+
+
+#handZone {
+  background:
+    radial-gradient(ellipse at center, rgba(15, 105, 68, 0.52), rgba(9, 57, 38, 0.9)),
+    linear-gradient(180deg, rgba(34, 17, 12, 0.2), rgba(34, 17, 12, 0.3));
+  border-top: 2px solid #88673b;
+}
+
+#handTitle,
+#trackerTitle,
+#msgBar,
+.statBox .s-label,
+#creditLabel,
+#betLabel {
+  color: #dcb781;
+}
+
+.statBox .s-value {
+  color: #f5cf93;
+  text-shadow: 0 0 8px rgba(255, 203, 130, 0.4);
+}
+
+.statBox.chain-stat .s-value {
+  color: #f5cf93;
+  text-shadow: 0 0 8px rgba(255, 203, 130, 0.4);
+}
+
+.statBox.deck-stat .s-value {
+  color: #d8c39f;
+}
+
+#creditVal {
+  color: #f5cf93;
+  text-shadow: 0 0 8px rgba(255, 206, 135, 0.45);
+}
+
+#trackerRight {
+  border-left-color: rgba(232, 186, 116, 0.45);
+}
+
+.boardSuit.black {
+  color: #ccb696;
+}
+
+.boardCard {
+  color: #a58c64;
+}
+
+.boardCard.used {
+  background: rgba(26, 11, 6, 0.85);
+  color: #55341f;
+}
+
+.boardCard.current {
+  background: #d8ad72;
+  color: #2a160d;
+  box-shadow: 0 0 6px rgba(229, 184, 120, 0.8);
+}
+
+#betAddBtn,
+#betStartBtn,
+#insertCoinBtn,
+#newGameBtn,
+#helpBtn,
+#rankingBtn,
+#creditResetBtn,
+#betCancelBtn,
+.overlay-btn {
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  border-radius: 6px;
+}
+
+#betAddBtn,
+#insertCoinBtn {
+  background: linear-gradient(180deg, #7a5b35, #4e361f);
+  border-color: #d1ab73;
+  color: #f5dfbe;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+  animation: none;
+}
+
+#betAddBtn:hover:not(:disabled),
+#insertCoinBtn:hover {
+  background: linear-gradient(180deg, #9b7545, #624224);
+  color: #fff7ea;
+}
+
+#betStartBtn {
+  background: linear-gradient(180deg, #3f7e44, #2d5f34);
+  border-color: #8ec291;
+  animation: none;
+}
+
+#bottomBar {
+  border-top-width: 1px;
+}
+
+#volumeSlider {
+  background: #6d5335;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  background: #e0bd86;
+  box-shadow: 0 0 6px rgba(255, 207, 138, 0.5);
+}
+
+#volumeSlider::-moz-range-thumb {
+  background: #e0bd86;
+  box-shadow: 0 0 6px rgba(255, 207, 138, 0.5);
+}
+
+@media (max-width: 980px) {
+  #cabinet {
+    max-width: 100%;
+    border-left-width: 6px;
+    border-right-width: 6px;
+  }
+
+  #mainLayout {
+    grid-template-columns: 170px 1fr;
+  }
+
+}
+
+@media (max-width: 760px) {
+  #mainLayout {
+    grid-template-columns: 1fr;
+  }
+
+  #payoutPanel {
+    width: 100%;
+    border-right: 0;
+    border-bottom: 2px solid #7d5b34;
+  }
+
+  #creditBar {
+    flex-wrap: wrap;
+  }
+
+  #trackerPanel {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #trackerRight {
+    width: 100%;
+    border-left: 0;
+    border-top: 1px solid rgba(232, 186, 116, 0.45);
+    padding: 8px 0 0;
+    justify-content: flex-start;
+  }
+
+  #bottomBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #bottomBtns {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
+
+/* ===== Visual Polish Pass 2 ===== */
+#titleBar h1 {
+  position: relative;
+  display: inline-block;
+  padding: 4px 18px 5px;
+  border: 1px solid rgba(236, 199, 138, 0.45);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(228, 186, 123, 0.2), rgba(121, 83, 44, 0.28)),
+    linear-gradient(90deg, rgba(255, 235, 191, 0.12), transparent 35%, transparent 65%, rgba(255, 235, 191, 0.1));
+}
+
+#titleBar h1::before,
+#titleBar h1::after {
+  content: "★";
+  color: rgba(241, 210, 157, 0.8);
+  font-size: 11px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-48%);
+}
+
+#titleBar h1::before { left: 7px; }
+#titleBar h1::after { right: 7px; }
+
+#trackerPanel,
+#creditBar {
+  box-shadow:
+    inset 0 1px 0 rgba(250, 224, 179, 0.16),
+    inset 0 -1px 0 rgba(40, 18, 8, 0.6);
+}
+
+#trackerRight .statBox {
+  min-width: 58px;
+  padding: 6px 8px;
+  border: 1px solid rgba(220, 178, 113, 0.35);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(53, 27, 16, 0.7), rgba(24, 11, 8, 0.78));
+}
+
+#fieldZone {
+  overflow: hidden;
+}
+
+#fieldZone::before {
+  color: rgba(241, 219, 181, 0.28);
+  letter-spacing: 5px;
+}
+
+#fieldCards {
+  width: 100%;
+  min-height: 230px;
+  align-items: center;
+}
+
+#hand {
+  padding-top: 8px;
+}
+
+#hand .card,
+#fieldCards .card {
+  background:
+    linear-gradient(165deg, #f7f2e7 0%, #e4dac7 65%, #d5c8b2 100%);
+  border: 1px solid #b79d74;
+  border-radius: 9px;
+  box-shadow:
+    0 8px 14px rgba(18, 8, 5, 0.5),
+    0 1px 0 rgba(255, 246, 221, 0.45) inset,
+    0 -1px 0 rgba(139, 107, 62, 0.35) inset;
+}
+
+#hand .card::before,
+#fieldCards .card::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  right: 6px;
+  height: 30%;
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+
+#hand .card::after,
+#fieldCards .card::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 6px;
+  border: 1px solid rgba(136, 104, 62, 0.25);
+  pointer-events: none;
+}
+
+#fieldCards .card {
+  transform: translateY(-2px);
+}
+
+#fieldCards .card .center-suit {
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.35));
+}
+
+#hand .card:hover {
+  box-shadow:
+    0 12px 20px rgba(19, 8, 5, 0.6),
+    0 0 14px rgba(248, 208, 145, 0.4),
+    0 1px 0 rgba(255, 246, 221, 0.5) inset;
+}
+
+#pokerBanner,
+#chainText {
+  color: #e7c795;
+  text-shadow: 0 0 8px rgba(240, 193, 121, 0.65);
+}
+
+#payoutPanel {
+  position: relative;
+}
+
+#payoutPanel::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 7px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(245, 211, 157, 0.55), transparent);
+  pointer-events: none;
+}
+
+#bottomBar {
+  position: relative;
+}
+
+#bottomBar::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  border-top: 1px solid rgba(245, 211, 157, 0.25);
+}
+
+/* ===== Classic Button Label Pass ===== */
+#betAddBtn,
+#betCancelBtn,
+#betStartBtn,
+#insertCoinBtn,
+#creditResetBtn,
+#newGameBtn,
+#startGameBtn,
+#helpBtn,
+#rankingBtn,
+.overlay-btn,
+.du-btn,
+#helpClose {
+  font-family: 'Cinzel', 'Rajdhani', serif;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#helpBtn,
+#rankingBtn {
+  min-width: 38px;
+  text-align: center;
+}
+
+#startGameBtn,
+#newGameBtn,
+#betStartBtn,
+#insertCoinBtn {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
