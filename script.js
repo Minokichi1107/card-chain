@@ -1123,14 +1123,25 @@ function saveRanking(data) {
 function addRankingEntry(m, mc, cleared) {
   let data = loadRanking();
   const now = new Date();
-  const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+  const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,"0")}/${String(now.getDate()).padStart(2,"0")} ${String(now.getHours()).padStart(2,"0")}:${String(now.getMinutes()).padStart(2,"0")}`;
   data.push({ medals: m, maxChain: mc, cleared, date: dateStr });
   data.sort((a,b) => b.medals - a.medals);
   data = data.slice(0, 10);
   saveRanking(data);
 }
 function renderRanking() {
+  const normalizeRankDate = (value) => {
+    const s = String(value ?? "").trim();
+    const m = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{1,2})$/);
+    if (!m) return s;
+    const [, y, mo, d, h, mi] = m;
+    return `${y}/${String(mo).padStart(2,"0")}/${String(d).padStart(2,"0")} ${String(h).padStart(2,"0")}:${String(mi).padStart(2,"0")}`;
+  };
+
   let data = loadRanking();
+  // 既存データの日時表記ゆれを吸収して保存し直す
+  data = data.map(r => ({ ...r, date: normalizeRankDate(r.date) }));
+  saveRanking(data);
   let el = document.getElementById("rankingList");
   if (!el) return;
   el.innerHTML = "";
@@ -1143,11 +1154,15 @@ function renderRanking() {
     row.className = "rankRow" + (i === 0 ? " rank-top" : "");
     let crown = i===0?"🥇":i===1?"🥈":i===2?"🥉":`${i+1}.`;
     let clearedBadge = r.cleared ? '<span class="rank-clear">CLEAR</span>' : '';
+    const rankDate = normalizeRankDate(r.date);
+    const parts = rankDate.split(" ");
+    const dPart = parts[0] || "";
+    const tPart = parts[1] || "";
     row.innerHTML = `
       <span class="rank-pos">${crown}</span>
       <span class="rank-score">${r.medals}<small>medals</small>${clearedBadge}</span>
       <span class="rank-chain">⛓${r.maxChain}</span>
-      <span class="rank-date">${r.date}</span>`;
+      <span class="rank-date"><span class="rank-date-d">${dPart}</span><span class="rank-date-t">${tPart}</span></span>`;
     el.appendChild(row);
   });
 }
