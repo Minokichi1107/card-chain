@@ -62,14 +62,14 @@ width: 200px;
   background: var(--panel);
   border-right: 3px solid var(--border);
   padding: 10px;
-  /* flexを使わず、単純なブロック配置にします */
+  /* Use block layout instead of flex to keep panel placement stable */
   display: block; 
   min-height: 500px;
 }
 
-/* CHAIN BONUS のエリアが下に詰まりすぎないように調整 */
+/* Keep CHAIN BONUS area from feeling too cramped at the bottom */
 #payoutPanel > div:last-child {
-  margin-top: auto;            /* ← これでCHAIN BONUSだけを一番下に押しやる */
+  margin-top: auto;            /* Push CHAIN BONUS section to the lowest position */
   padding-bottom: 10px;
 }
 
@@ -91,8 +91,8 @@ width: 200px;
   color: #fff;
   letter-spacing: 0.5px;
 }
-.hand-name { color: var(--cyan); /* 役名はシアン色に */ }
-.payRow .multiplier { color: var(--gold); /* 倍率は金色に */  font-weight: bold; }
+.hand-name { color: var(--cyan); /* Hand names in cyan */ }
+.payRow .multiplier { color: var(--gold); /* Multipliers in gold */  font-weight: bold; }
 .payRow.active {
   background: rgba(255,215,0,0.35);
   border-color: var(--gold);
@@ -112,14 +112,14 @@ width: 200px;
 }
 .payRow.active .multiplier { color: var(--gold); text-shadow: 0 0 16px var(--gold), 0 0 30px var(--gold2); }
 
-/* CHAIN BONUSパネル現在の範囲を常時反転 */
+/* Highlight current CHAIN BONUS range */
 .chainBonusRow.current-range {
   background: rgba(0, 229, 255, 0.18);
   border-color: var(--cyan);
   color: #fff;
 }
 .chainBonusRow.current-range span { color: var(--cyan) !important; font-weight: 700; }
-/* milestoneヒット時のactiveはcurrent-rangeより優先 */
+/* On milestone hit, active state takes priority over current-range */
 .chainBonusRow.active.current-range {
   background: rgba(255, 215, 0, 0.6);
   border-color: var(--gold);
@@ -220,7 +220,7 @@ width: 200px;
 #fieldZone.tier4 { border-color:#ff3232; box-shadow: inset 0 0 40px rgba(200,0,0,0.2),    0 0 35px rgba(255,50,50,0.5); }
 #fieldZone.tier5 { animation: rainbowBorder 1s linear infinite; }
 
-/* chain段階ごとのゲームエリア背景色オーバーレイ */
+/* Game area background overlay by chain tier */
 #gameArea { position: relative; transition: background 1s ease; }
 #gameArea::before {
   content: '';
@@ -551,7 +551,7 @@ width: 200px;
   animation: blink 1.5s step-end infinite;
 }
 @keyframes blink { 50% { opacity:0; } }
-/* ===== カード補充めくりアニメ ===== */
+/* ===== Card Refill Flip Animation ===== */
 @keyframes cardDealIn {
   0%   { transform: translateY(-30px) rotateY(90deg); opacity: 0; }
   50%  { transform: translateY(0)     rotateY(90deg); opacity: 1; }
@@ -561,7 +561,7 @@ width: 200px;
   animation: cardDealIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* ===== ピンチ演出 ===== */
+/* ===== Pinch Effect ===== */
 @keyframes pinchFlash {
   0%,100% { border-color: var(--green-felt); box-shadow: none; }
   25%,75% { border-color: #ff4444; box-shadow: inset 0 0 40px rgba(255,0,0,0.3), 0 0 30px rgba(255,0,0,0.5); }
@@ -571,7 +571,7 @@ width: 200px;
   animation: pinchFlash 0.4s ease 4;
 }
 
-/* ===== 音量スライダー ===== */
+/* ===== Volume Slider ===== */
 #volumeControl {
   display: flex; align-items: center; gap: 6px;
   padding: 4px 8px;
@@ -601,7 +601,7 @@ width: 200px;
   cursor: pointer;
 }
 
-/* ===== ヘルプモーダル ===== */
+/* ===== Help Modal ===== */
 #helpBtn {
   font-family: 'Orbitron', sans-serif;
   font-size: 11px; font-weight: 700;
@@ -674,7 +674,7 @@ width: 200px;
 }
 #helpClose:hover { transform: scale(1.05); }
 
-/* ===== ランキングモーダル ===== */
+/* ===== Ranking Modal ===== */
 #rankingBox {
   background: linear-gradient(180deg, #0d1829, #060d18);
   border: 2px solid var(--gold);
@@ -716,7 +716,7 @@ width: 200px;
   font-weight: 700; letter-spacing: 1px;
 }
 
-/* ランキングボタン */
+/* Ranking button */
 #rankingBtn {
   font-size: 16px; padding: 6px 10px;
   background: transparent;
@@ -840,6 +840,13 @@ width: 200px;
 #betArea {
   display: flex; align-items: center; gap: 6px;
 }
+#betActionBtns {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 150px;
+  justify-content: flex-end;
+}
 #betLabel {
   font-family: 'Orbitron', sans-serif;
   font-size: 10px; color: #888; letter-spacing: 3px;
@@ -877,14 +884,17 @@ width: 200px;
 }
 #betStartBtn {
   font-family: 'Orbitron', sans-serif;
-  font-size: 11px; font-weight: 900; letter-spacing: 1px;
-  padding: 8px 14px;
+  font-size: 10px; font-weight: 900; letter-spacing: 1px;
+  padding: 6px 10px;
   background: linear-gradient(180deg, #00cc44, #008833);
   color: #fff; border: 2px solid #00ff66;
   border-radius: 4px; cursor: pointer;
   box-shadow: 0 0 12px rgba(0,255,100,0.4);
   transition: 0.15s;
   animation: startPulse 1s ease-in-out infinite;
+  min-width: 72px;
+  visibility: hidden;
+  pointer-events: none;
 }
 #betStartBtn:hover {
   transform: translateY(-2px);
@@ -898,11 +908,14 @@ width: 200px;
 #betCancelBtn {
   font-family: 'Orbitron', sans-serif;
   font-size: 10px; font-weight: 700; letter-spacing: 1px;
-  padding: 8px 10px;
+  padding: 6px 8px;
   background: transparent;
   color: #888; border: 1px solid #444;
   border-radius: 4px; cursor: pointer;
   transition: 0.15s;
+  min-width: 72px;
+  visibility: hidden;
+  pointer-events: none;
 }
 #betCancelBtn:hover {
   color: #ff6b6b; border-color: #ff6b6b;
@@ -1232,60 +1245,6 @@ body {
 #titleBar h1::before,
 #titleBar h1::after {
   content: "★";
-  color: rgba(241, 210, 157, 0.8);
-  font-size: 11px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-48%);
-}
-
-#titleBar h1::before { left: 7px; }
-#titleBar h1::after { right: 7px; }
-
-#trackerPanel,
-#creditBar {
-  box-shadow:
-    inset 0 1px 0 rgba(250, 224, 179, 0.16),
-    inset 0 -1px 0 rgba(40, 18, 8, 0.6);
-}
-
-#trackerRight .statBox {
-  min-width: 58px;
-  padding: 6px 8px;
-  border: 1px solid rgba(220, 178, 113, 0.35);
-  border-radius: 6px;
-  background: linear-gradient(180deg, rgba(53, 27, 16, 0.7), rgba(24, 11, 8, 0.78));
-}
-
-#fieldZone {
-  overflow: hidden;
-}
-
-#fieldZone::before {
-  color: rgba(241, 219, 181, 0.28);
-  letter-spacing: 5px;
-}
-
-#fieldCards {
-  width: 100%;
-  min-height: 230px;
-  align-items: center;
-}
-
-#hand {
-  padding-top: 8px;
-}
-
-#hand .card,
-#fieldCards .card {
-  background:
-    linear-gradient(165deg, #f7f2e7 0%, #e4dac7 65%, #d5c8b2 100%);
-  border: 1px solid #b79d74;
-  border-radius: 9px;
-  box-shadow:
-    0 8px 14px rgba(18, 8, 5, 0.5),
-    0 1px 0 rgba(255, 246, 221, 0.45) inset,
-    0 -1px 0 rgba(139, 107, 62, 0.35) inset;
 }
 
 #hand .card::before,
@@ -1390,4 +1349,224 @@ body {
 #betStartBtn,
 #insertCoinBtn {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* ===== Material Tuning Pack ===== */
+:root {
+  --tune-felt-grain: 0.08;
+  --tune-felt-vignette: 0.50;
+  --tune-panel-specular: 0.30;
+  --tune-wood-stripe: 0.06;
+}
+
+#cabinet {
+  background:
+    repeating-linear-gradient(
+      11deg,
+      rgba(255, 225, 170, var(--tune-wood-stripe)) 0 2px,
+      rgba(41, 18, 10, 0) 2px 8px
+    ),
+    linear-gradient(135deg, rgba(255, 220, 150, 0.08), transparent 36%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.015) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(175deg, #4a2313, #2a130b 58%, #180a06);
+  box-shadow:
+    0 0 0 3px #2f1a0f inset,
+    0 0 0 6px #9c7548 inset,
+    0 0 28px rgba(0, 0, 0, 0.35) inset,
+    0 18px 40px rgba(0, 0, 0, 0.55);
+}
+
+#creditBar,
+#trackerPanel,
+#bottomBar,
+#payoutPanel {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 228, 187, var(--tune-panel-specular)),
+    inset 0 -2px 0 rgba(24, 10, 7, 0.7),
+    0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+#fieldZone {
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(19, 128, 83, 0.74) 0%,
+      rgba(10, 77, 50, 0.96) 62%,
+      rgba(6, 48, 33, 1) 100%
+    ),
+    repeating-radial-gradient(
+      circle at 34% 40%,
+      rgba(232, 255, 240, var(--tune-felt-grain)) 0 1px,
+      transparent 1px 4px
+    ),
+    repeating-radial-gradient(
+      circle at 70% 62%,
+      rgba(198, 238, 217, calc(var(--tune-felt-grain) * 0.6)) 0 1px,
+      transparent 1px 5px
+    );
+  box-shadow:
+    inset 0 0 90px rgba(0, 0, 0, var(--tune-felt-vignette)),
+    inset 0 1px 0 rgba(224, 190, 134, 0.16);
+}
+
+#handZone {
+  background:
+    radial-gradient(ellipse at center, rgba(18, 114, 74, 0.64), rgba(8, 52, 35, 0.93)),
+    linear-gradient(180deg, rgba(34, 17, 12, 0.2), rgba(34, 17, 12, 0.34));
+  box-shadow: inset 0 1px 0 rgba(230, 194, 136, 0.2);
+}
+
+#titleBar h1::before,
+#titleBar h1::after {
+  content: "★";
+  color: rgba(241, 210, 157, 0.82);
+  font-size: 11px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-48%);
+}
+
+#titleBar h1::before { left: 7px; }
+#titleBar h1::after { right: 7px; }
+
+#trackerRight .statBox {
+  border: 1px solid rgba(236, 197, 135, 0.42);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 225, 176, 0.18),
+    0 8px 18px rgba(0, 0, 0, 0.32);
+}
+
+/* ===== Image Match Pack ===== */
+:root {
+  --m-title-metal-light: #f1d39e;
+  --m-title-metal-mid: #b88a52;
+  --m-title-metal-dark: #6d4a28;
+  --m-marble-light: rgba(246, 226, 190, 0.11);
+  --m-marble-mid: rgba(180, 140, 93, 0.16);
+  --m-marble-dark: rgba(65, 35, 20, 0.5);
+  --m-bg-outside-a: #2d0f06;
+  --m-bg-outside-b: #120503;
+  --m-card-paper: #f2ecde;
+  --m-card-shadow: rgba(16, 8, 5, 0.55);
+  --m-glass: rgba(158, 191, 205, 0.1);
+}
+
+body {
+  background:
+    radial-gradient(60% 90% at 50% 48%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.52) 100%),
+    radial-gradient(120% 100% at 50% 10%, #5a2310 0%, var(--m-bg-outside-a) 38%, var(--m-bg-outside-b) 100%);
+}
+
+#titleBar h1 {
+  color: transparent;
+  background:
+    linear-gradient(180deg, var(--m-title-metal-light) 0%, #dfbd87 24%, var(--m-title-metal-mid) 52%, var(--m-title-metal-dark) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow:
+    0 1px 0 rgba(255, 235, 199, 0.35),
+    0 -1px 0 rgba(55, 30, 12, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+#payoutPanel {
+  background:
+    radial-gradient(circle at 20% 15%, var(--m-marble-light) 0 3%, transparent 10%),
+    radial-gradient(circle at 72% 40%, var(--m-marble-mid) 0 2%, transparent 12%),
+    radial-gradient(circle at 30% 82%, rgba(235, 197, 140, 0.08) 0 1%, transparent 8%),
+    linear-gradient(165deg, rgba(83, 40, 22, 0.84), rgba(36, 17, 10, 0.95)),
+    repeating-linear-gradient(0deg, rgba(255, 230, 188, 0.03) 0 1px, transparent 1px 4px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 229, 188, 0.17),
+    inset 0 -2px 0 rgba(33, 15, 8, 0.72),
+    inset 0 0 34px var(--m-marble-dark);
+}
+
+#payoutPanel .payRow {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+
+#fieldZone {
+  background:
+    radial-gradient(ellipse at center, rgba(20, 130, 83, 0.73) 0%, rgba(10, 74, 48, 0.95) 62%, rgba(6, 45, 31, 1) 100%),
+    repeating-radial-gradient(circle at 34% 40%, rgba(230, 255, 240, 0.045) 0 1px, transparent 1px 4px),
+    repeating-radial-gradient(circle at 73% 65%, rgba(193, 236, 214, 0.022) 0 1px, transparent 1px 5px);
+}
+
+.card {
+  background:
+    linear-gradient(165deg, #f8f4ea 0%, var(--m-card-paper) 72%, #ded2be 100%);
+  border-color: #b89c71;
+  box-shadow:
+    0 10px 18px var(--m-card-shadow),
+    0 1px 0 rgba(255, 248, 226, 0.5) inset,
+    0 -1px 0 rgba(126, 97, 58, 0.35) inset;
+}
+
+.card-back {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255, 226, 165, 0.12), transparent 35%),
+    linear-gradient(135deg, #402513 0%, #25150d 50%, #4b2b17 100%);
+  border: 2px solid #ab8150;
+  box-shadow:
+    2px 5px 12px rgba(0, 0, 0, 0.58),
+    inset 0 1px 0 rgba(255, 226, 178, 0.3),
+    inset 0 0 24px rgba(0, 0, 0, 0.34);
+}
+
+.card-back::after {
+  border: 1px solid rgba(244, 208, 145, 0.38);
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 219, 157, 0.08) 0 2px, transparent 2px 6px),
+    repeating-linear-gradient(-45deg, rgba(99, 59, 29, 0.22) 0 2px, transparent 2px 6px);
+}
+
+#betMeter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  min-width: 56px;
+  padding: 3px 8px;
+  border: 1px solid rgba(235, 194, 131, 0.4);
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(52, 27, 16, 0.75), rgba(22, 11, 8, 0.82));
+  box-shadow: inset 0 1px 0 rgba(255, 225, 176, 0.16);
+}
+
+#betValue {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: #f3cf94;
+  line-height: 1;
+  text-shadow: 0 0 8px rgba(248, 208, 145, 0.45);
+}
+
+#betMax {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px;
+  color: #c8a575;
+}
+
+#trackerRight .statBox {
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06) 0%, var(--m-glass) 32%, rgba(25, 16, 12, 0.65) 100%);
+  backdrop-filter: blur(1px);
+}
+
+#trackerRight .statBox::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  right: 4px;
+  height: 36%;
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(244, 254, 255, 0.18), rgba(244, 254, 255, 0));
+  pointer-events: none;
 }

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -21,10 +21,12 @@
     </div>
     <div id="betArea">
       <span id="betLabel">BET</span>
-      <div id="betCoins"></div>
+      <div id="betMeter"><span id="betValue">0</span><span id="betMax">/5</span></div>
       <button id="betAddBtn" onclick="addBet()">BET +1</button>
-      <button id="betCancelBtn" onclick="cancelBet()" style="display:none;">✕ CANCEL</button>
-      <button id="betStartBtn" onclick="start()" style="display:none;">▶ START</button>
+      <div id="betActionBtns">
+        <button id="betCancelBtn" onclick="cancelBet()">CANCEL</button>
+        <button id="betStartBtn" onclick="start()">START</button>
+      </div>
     </div>
     <button id="insertCoinBtn" onclick="insertCoin()">INSERT COIN</button>
     <button id="creditResetBtn" onclick="resetCredit()">RESET</button>

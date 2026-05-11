@@ -67,3 +67,8 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Personal environment docs (do not commit)
+doc/personal/
+doc/*-personal.md
+doc/*-private.md

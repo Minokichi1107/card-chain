@@ -89,6 +89,9 @@ function renderCredit() {
   let el = document.getElementById("creditVal");
   if (el) el.textContent = credit;
 
+  let betValueEl = document.getElementById("betValue");
+  if (betValueEl) betValueEl.textContent = String(currentBet);
+
   // BETコイン表示（投入枚数をコインアイコンで表示）
   let bc = document.getElementById("betCoins");
   if (bc) {
@@ -117,11 +120,19 @@ function renderCredit() {
 
   // STARTボタン：BET1以上でゲーム外の時に表示
   let startBtn = document.getElementById("betStartBtn");
-  if (startBtn) startBtn.style.display = (!gameInProgress && currentBet >= 1) ? "" : "none";
+  if (startBtn) {
+    const visible = !gameInProgress && currentBet >= 1;
+    startBtn.style.visibility = visible ? "visible" : "hidden";
+    startBtn.style.pointerEvents = visible ? "auto" : "none";
+  }
 
   // CANCELボタン：BET1以上でゲーム外の時に表示
   let cancelBtn = document.getElementById("betCancelBtn");
-  if (cancelBtn) cancelBtn.style.display = (!gameInProgress && currentBet >= 1) ? "" : "none";
+  if (cancelBtn) {
+    const visible = !gameInProgress && currentBet >= 1;
+    cancelBtn.style.visibility = visible ? "visible" : "hidden";
+    cancelBtn.style.pointerEvents = visible ? "auto" : "none";
+  }
 
   // NEW GAMEボタンは非表示（betStartBtnに統一）
   let ng = document.getElementById("newGameBtn");
